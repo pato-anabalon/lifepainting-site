@@ -1,0 +1,158 @@
+@import "tailwindcss";
+
+/*
+ * Life Painting design tokens.
+ * Source: Brand Guidelines (Colour palette + Typography). Do not add colours outside this set.
+ */
+:root {
+  --lp-cream: #f8f0da;
+  --lp-forest: #1f4a3a; /* "Dark Turquoise" in the guidelines */
+  --lp-azure: #5a9cab; /* "Gray Azure" – decorative / large type only on cream */
+  --lp-yellow: #fdd01d;
+  --lp-mustard: #eaa72f;
+
+  /* Surface roles */
+  --lp-bg: var(--lp-cream);
+  --lp-fg: var(--lp-forest);
+  --lp-focus: var(--lp-forest);
+
+  --lp-header-h: 4.25rem;
+}
+
+@theme inline {
+  --color-cream: var(--lp-cream);
+  --color-forest: var(--lp-forest);
+  --color-azure: var(--lp-azure);
+  --color-sun: var(--lp-yellow);
+  --color-mustard: var(--lp-mustard);
+
+  --font-sans: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
+  /* Lovelo is a licensed font and is still pending (see Life_Painting_PROJECT_CONTEXT.md).
+     Until the file is added, brand titles fall back to heavy Montserrat. */
+  --font-title: "Lovelo", var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
+
+  /* Hard, sign-painter shadows – the signature depth of the brand */
+  --shadow-sign: 4px 4px 0 0 var(--lp-forest);
+  --shadow-sign-sm: 3px 3px 0 0 var(--lp-forest);
+  --shadow-sign-mustard: 6px 6px 0 0 var(--lp-mustard);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: calc(var(--lp-header-h) + 1rem);
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background: var(--lp-bg);
+    color: var(--lp-fg);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: clip;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    line-height: 1.1;
+    text-wrap: balance;
+  }
+
+  /* Visible focus on every surface (dark surfaces flip the ring to yellow) */
+  :focus-visible {
+    outline: 3px solid var(--lp-focus);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  [data-surface="dark"] :focus-visible {
+    outline-color: var(--lp-yellow);
+  }
+
+  ::selection {
+    background: var(--lp-yellow);
+    color: var(--lp-forest);
+  }
+}
+
+/* Preloader visibility is decided before paint by the boot script (see lib/motion/preloader.ts).
+   No attribute (no JS) or "skip"/"done" → hidden; "pending" → shown and page scroll locked. */
+html:not([data-lp-preloader="pending"]) .lp-preloader {
+  display: none;
+}
+html[data-lp-preloader="pending"] {
+  overflow: hidden;
+}
+
+@layer components {
+  /* Brand title style: Lovelo, uppercase. Extra line-height avoids clipped descenders. */
+  .lp-title {
+    font-family: var(--font-title);
+    text-transform: uppercase;
+    line-height: 1.12;
+    letter-spacing: 0.01em;
+    padding-block: 0.08em;
+  }
+
+  /* Ambient marquee: two identical tracks side by side, each slides one full width. */
+  .lp-marquee-track {
+    display: flex;
+    flex-shrink: 0;
+    min-width: 100%;
+    align-items: center;
+    justify-content: space-around;
+    animation: lp-marquee 38s linear infinite;
+  }
+  .lp-marquee:hover .lp-marquee-track {
+    animation-play-state: paused;
+  }
+
+  .skip-link {
+    position: absolute;
+    left: 1rem;
+    top: -4rem;
+    z-index: 100;
+    background: var(--lp-yellow);
+    color: var(--lp-forest);
+    border: 2px solid var(--lp-forest);
+    padding: 0.75rem 1rem;
+    font-weight: 700;
+  }
+  .skip-link:focus {
+    top: 1rem;
+  }
+}
+
+@keyframes lp-marquee {
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lp-marquee-track[aria-hidden="true"] {
+    display: none;
+  }
+  .lp-marquee-track {
+    animation: none;
+    flex-wrap: wrap;
+    gap: 0.5rem 2rem;
+    padding-inline: 1rem;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

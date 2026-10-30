@@ -1,0 +1,25 @@
+node_modules
+.next
+out
+.env*
+!.env.example
+.vercel
+*.tsbuildinfo
+next-env.d.ts
+.DS_Store
+.taste-skill
+
+# Local tooling (skills, agents, per-machine config)
+.claude
+.agents
+.codex
+.impeccable/config.local.json
+skills-lock.json
+
+# Test / coverage output
+coverage
+*.log
+npm-debug.log*
+
+# Client source documents (brand PDFs, questionnaire): private, 45 MB, and anything in public/ is served on the site
+public/docs
