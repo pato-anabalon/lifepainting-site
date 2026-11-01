@@ -50,9 +50,10 @@ export const sections: Record<
     evidence: "ready",
     visible: true,
   },
+  // "How we look after your home" (owner, 2026-11-01: its own menu item).
   services: {
     anchor: "looking-after-your-home",
-    navLabel: null,
+    navLabel: "Our approach",
     evidence: "ready",
     visible: true,
   },
@@ -90,7 +91,8 @@ export const SHOW_PENDING_SECTIONS = true;
 export function isSectionVisible(id: SectionId): boolean {
   const s = sections[id];
   if (!s.visible) return false;
-  if (s.evidence === "pending") return SHOW_PENDING_SECTIONS || process.env.NODE_ENV !== "production";
+  if (s.evidence === "pending")
+    return SHOW_PENDING_SECTIONS || process.env.NODE_ENV !== "production";
   return true;
 }
 
@@ -354,12 +356,13 @@ export const contact = {
   title: "Ready to give your home a new life?",
   intro: "Let's talk about your next project.",
   marquee: [
+    "Homes",
     "Interior",
     "Exterior",
+    "Renovations",
     "Decorative Finishes",
     "Preparation & Repairs",
-    "Auckland",
-    "North Shore",
+    "Decorative Work",
   ],
   /** Until the step form ships (Phase 3), the real channels are a call and an email. */
   callLabel: "Call 027 375 9093",
@@ -377,6 +380,8 @@ export const footer = {
   },
   areasLabel: "Areas we work in",
   copyright: `© ${new Date().getFullYear()} Life Painting & Decorating. Auckland, New Zealand.`,
+  /** Site credit (owner, 2026-11-01). The heart is read out as "love". */
+  credit: { before: "Built with", heart: "💛", heartLabel: "love", after: "by", label: "Nodo.co.nz", href: "https://nodo.co.nz" },
 };
 
 export const contactForm = {

@@ -50,3 +50,6 @@ Google Business Profile (service-area business, no street address shown) · coll
 
 ## Anchors (2026-10-31)
 - Home anchors: "What we paint and prepare" is now `#services` (menu "Services", hero "See what we do"); "How we look after your home" moved from `#services` to `#looking-after-your-home`. No route, title, canonical or JSON-LD changes.
+
+## Navigation (2026-11-01)
+- New menu item "Our approach" → `#looking-after-your-home` (header and footer "Explore"). Internal anchor only; no route, title, canonical or JSON-LD changes. The desktop nav row now starts at 1024 px; below that the full-screen menu holds the same links.

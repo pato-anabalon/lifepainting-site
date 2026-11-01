@@ -10,8 +10,12 @@ import { useEffect, useRef } from "react";
  * without JS or with reduced motion). Decorative SVG.
  */
 
-/** Paints `.lp-stripe` paths in once, the first time the svg scrolls into view (motion allowed). */
-function useDrawOnView() {
+/**
+ * Paints `.lp-stripe` paths in once, the first time the svg scrolls into view (motion allowed).
+ * `rootMargin` defaults to ignoring the bottom 15 % of the screen, so on the page the paint starts
+ * once the stripes are properly in view; pass "0px" for one pinned to the foot of the screen.
+ */
+function useDrawOnView(rootMargin = "0px 0px -15% 0px") {
   const ref = useRef<SVGSVGElement>(null);
   useEffect(() => {
     const el = ref.current;
@@ -24,11 +28,11 @@ function useDrawOnView() {
         el.dataset.draw = "in";
         io.disconnect();
       },
-      { rootMargin: "0px 0px -15% 0px" },
+      { rootMargin },
     );
     io.observe(el);
     return () => io.disconnect();
-  }, []);
+  }, [rootMargin]);
   return ref;
 }
 
@@ -126,12 +130,15 @@ function ribbonBand(i: number) {
 export function LifeRetroRibbon({
   // Bottom band first.
   colors = ["var(--lp-azure-deep)", "var(--lp-azure)", "var(--lp-yellow)", "var(--lp-mustard)", "var(--lp-forest)"],
+  rootMargin,
   className,
 }: {
   colors?: string[];
+  /** See useDrawOnView. */
+  rootMargin?: string;
   className?: string;
 }) {
-  const ref = useDrawOnView();
+  const ref = useDrawOnView(rootMargin);
   return (
     <svg ref={ref} viewBox="0 0 360 160" preserveAspectRatio="xMinYMax meet" aria-hidden focusable="false" className={className}>
       {colors.map((c, i) => (

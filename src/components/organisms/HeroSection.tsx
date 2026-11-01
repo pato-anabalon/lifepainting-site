@@ -25,7 +25,8 @@ export function HeroSection() {
       <LifeHeroCollage photos={heroCollage.photos} backdrop={<LifeHeroStrokes />}>
         <div className="max-w-[60rem] px-2 py-8 text-center sm:px-8">
           <LifeHeroReveal className="flex flex-col items-center">
-            {/* The wide logo sits in a square 1563px canvas; this box crops it to the artwork band. */}
+            {/* The wide logo file (1556×568) still has a little air; this box crops it to the artwork band,
+                exactly as before the file was trimmed (object position 35 % vertically). */}
             <div data-lp-reveal className="mb-6 sm:mb-8">
               <div
                 data-testid="home-hero-logo"
@@ -37,7 +38,7 @@ export function HeroSection() {
                   fill
                   loading="eager"
                   sizes="(min-width: 1024px) 352px, 208px"
-                  className="object-cover"
+                  className="object-cover object-[50%_35%]"
                 />
               </div>
             </div>

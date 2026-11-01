@@ -8,17 +8,18 @@ import { buildBrushWipe, loadBrushSprite } from "@/lib/motion/brushWipe";
 
 registerLifeMotion();
 
-const MONOGRAM = "/logos/icon-for-dark.png";
+/** Full stacked logo (owner, 2026-11-01; was the monogram `icon-for-dark.png`). */
+const LOGO = "/logos/logo-for-dark.png";
 
 /** Brush strokes, all rows (ms). */
 const BRUSH_MS = 1500;
-/** Longest wait for the brush sprite after the monogram; past it the overlay just fades out. */
+/** Longest wait for the brush sprite after the logo; past it the overlay just fades out. */
 const SPRITE_WAIT_MS = 2500;
 /** Hard deadline from mount: the overlay never stays longer than this, whatever fails. */
 const DEADLINE_MS = 1600 + SPRITE_WAIT_MS + BRUSH_MS + 300 + 1500;
 
 /**
- * ~3.4 s intro: monogram fades in and a light shimmer sweeps across it; then rows of a real brush
+ * ~3.4 s intro: logo fades in and a light shimmer sweeps across it; then rows of a real brush
  * stroke paint the page colour (cream) over everything, top-left to bottom-right (brushWipe.ts).
  * The overlay then fades and the preloader is marked done, so the hero (collage + copy) appears on
  * a cream screen that matches the paint. Once per session. Skipped with reduced motion.
@@ -39,7 +40,7 @@ export function LifePaintingPreloader() {
       }
       // JS is running: the boot watchdog is no longer needed; this component keeps its own deadline.
       clearTimeout(window.__lpPreloaderWatchdog);
-      // Start loading the sprite now: the monogram gives it ~1.6 s.
+      // Start loading the sprite now: the logo intro gives it ~1.6 s.
       const sprite = loadBrushSprite();
       let brush: gsap.core.Timeline | undefined;
       let cancelled = false;
@@ -92,21 +93,21 @@ export function LifePaintingPreloader() {
       className="lp-preloader fixed inset-0 z-[100] flex items-center justify-center bg-forest"
     >
       <div ref={paint} data-testid="site-preloader-paint" className="pointer-events-none absolute inset-0 z-10 overflow-hidden" />
-      <div data-lp-mark className="relative size-44 sm:size-56">
-        <Image src={MONOGRAM} alt="" fill sizes="224px" priority className="object-contain" />
+      <div data-lp-mark className="relative size-60 sm:size-80">
+        <Image src={LOGO} alt="" fill sizes="(min-width: 640px) 320px, 240px" priority className="object-contain" />
         <div
           data-lp-shine
           className="absolute inset-0"
           style={{
-            WebkitMaskImage: `url(${MONOGRAM})`,
-            maskImage: `url(${MONOGRAM})`,
+            WebkitMaskImage: `url(${LOGO})`,
+            maskImage: `url(${LOGO})`,
             WebkitMaskSize: "contain",
             maskSize: "contain",
             WebkitMaskRepeat: "no-repeat",
             maskRepeat: "no-repeat",
             WebkitMaskPosition: "center",
             maskPosition: "center",
-            // taste-skill-ignore: the shimmer IS the brand intro (masked to the monogram, not a background)
+            // taste-skill-ignore: the shimmer IS the brand intro (masked to the logo, not a background)
             backgroundImage: "linear-gradient(110deg, transparent 38%, rgba(255,255,255,0.9) 50%, transparent 62%)",
             backgroundSize: "250% 100%",
             backgroundRepeat: "no-repeat",

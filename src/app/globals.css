@@ -259,6 +259,26 @@ html[data-lp-preloader="pending"] {
   }
 }
 
+/* Desktop nav scroll-spy bar (Header): the only line under a link (hover turns the text yellow). */
+.lp-nav-bar {
+  position: absolute;
+  left: 0;
+  bottom: -0.6rem;
+  height: 3px;
+  width: 0;
+  opacity: 0;
+  background: var(--lp-yellow);
+  pointer-events: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .lp-nav-bar {
+    transition:
+      transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+      width 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 0.25s ease;
+  }
+}
+
 /* Shape dividers (ShapeDivider atom): full-bleed SVG edge on a `relative` section. */
 .lp-shape-divider {
   position: absolute;

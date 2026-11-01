@@ -10,8 +10,10 @@ export function Footer() {
     <footer data-testid="site-footer" data-surface="dark" className="relative overflow-hidden bg-forest text-cream">
       <Container className="grid gap-12 pb-10 pt-16 md:grid-cols-3 lg:pt-20">
         <div>
-          <Logo variant="wide" surface="dark" className="-ml-2 -mt-4 w-32" testId="site-footer-logo" />
-          <p className="mt-4 max-w-xs text-sm leading-relaxed">{footer.blurb}</p>
+          {/* Negative margins take up the file's own air, so the artwork lines up with the column's
+              top and left edges (level with the other columns' headings). */}
+          <Logo variant="wide" surface="dark" className="-mt-3 -ml-1.5 w-56 lg:w-60" sizes="(min-width: 1024px) 240px, 224px" testId="site-footer-logo" />
+          <p className="mt-5 max-w-xs text-sm leading-relaxed">{footer.blurb}</p>
         </div>
 
         <nav aria-label="Footer – services and pages" data-testid="site-footer-nav" className="grid grid-cols-2 gap-8">
@@ -80,22 +82,23 @@ export function Footer() {
         </Container>
       )}
 
-      <Container className="flex flex-col gap-3 py-6 sm:flex-row sm:items-center sm:justify-between">
+      <Container className="flex flex-col gap-3 pt-6 pb-10 lg:flex-row lg:items-center lg:justify-between">
         <p className="text-sm">{footer.copyright}</p>
+        <p data-testid="site-footer-credit" className="text-sm">
+          {footer.credit.before}{" "}
+          <span role="img" aria-label={footer.credit.heartLabel}>
+            {footer.credit.heart}
+          </span>{" "}
+          {footer.credit.after}{" "}
+          <TextLink href={footer.credit.href} surface="dark" data-testid="site-footer-credit-link">
+            {footer.credit.label}
+          </TextLink>
+        </p>
         <p className="flex gap-5 text-sm">
           <TextLink href="/privacy" surface="dark">Privacy policy</TextLink>
           <ConsentPreferencesButton className="font-semibold underline decoration-sun decoration-2 underline-offset-4 hover:decoration-cream" />
         </p>
       </Container>
-
-      {/* Brand mark: decorative oversize wordmark, hidden from assistive tech */}
-      <p
-        aria-hidden
-        data-testid="site-footer-brand-mark"
-        className="lp-title pointer-events-none select-none overflow-hidden whitespace-nowrap px-5 pb-4 text-center text-[17vw] leading-none text-azure/40 lg:text-[12rem]"
-      >
-        Life
-      </p>
     </footer>
   );
 }

@@ -2,10 +2,14 @@ import Image from "next/image";
 import { cn, type Surface } from "@/lib/cn";
 import { site } from "@/lib/content";
 
+/**
+ * Files and their intrinsic size (keep in sync when a file changes: a wrong ratio stretches the logo).
+ * The wide logos were trimmed to 568px tall on 2026-11-01 (were 1563px squares with air above/below).
+ */
 const sources = {
-  stacked: { light: "/logos/logo-for-light.png", dark: "/logos/logo-for-dark.png" },
-  wide: { light: "/logos/logo-wide-for-light.png", dark: "/logos/logo-wide-for-dark.png" },
-  icon: { light: "/logos/icon-for-light.png", dark: "/logos/icon-for-dark.png" },
+  stacked: { light: { src: "/logos/logo-for-light.png", w: 1563, h: 1563 }, dark: { src: "/logos/logo-for-dark.png", w: 1563, h: 1563 } },
+  wide: { light: { src: "/logos/logo-wide-for-light.png", w: 1556, h: 568 }, dark: { src: "/logos/logo-wide-for-dark.png", w: 1558, h: 568 } },
+  icon: { light: { src: "/logos/icon-for-light.png", w: 1563, h: 1563 }, dark: { src: "/logos/icon-for-dark.png", w: 1563, h: 1563 } },
 } as const;
 
 type Props = {
@@ -14,17 +18,20 @@ type Props = {
   variant?: keyof typeof sources;
   className?: string;
   priority?: boolean;
+  /** Rendered width hint for the image optimiser; pass it when the logo is shown larger than 160px. */
+  sizes?: string;
   testId?: string;
 };
 
-export function Logo({ surface = "light", variant = "wide", className, priority, testId }: Props) {
+export function Logo({ surface = "light", variant = "wide", className, priority, sizes = "(min-width: 1024px) 160px, 120px", testId }: Props) {
+  const file = sources[variant][surface];
   return (
     <Image
-      src={sources[variant][surface]}
+      src={file.src}
       alt={`${site.name} – ${site.tagline}`}
-      width={1563}
-      height={1563}
-      sizes="(min-width: 1024px) 160px, 120px"
+      width={file.w}
+      height={file.h}
+      sizes={sizes}
       priority={priority}
       data-testid={testId}
       className={cn("h-auto", className)}

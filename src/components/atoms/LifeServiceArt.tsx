@@ -9,12 +9,13 @@ export type ArtKind =
   | "weatherboards" | "masonry" | "roofs" | "fences";
 
 const scenes: Record<ArtKind, (ink: string, accent: string) => ReactNode> = {
+  // A roller on the wall, with the band of fresh paint it has just rolled above it.
   interior: (ink, accent) => (
     <>
-      <rect x="12" y="20" width="78" height="28" rx="4" fill={ink} />
-      <path d="M90 34h14v28H62v14" fill="none" stroke={ink} strokeWidth="6" strokeLinejoin="round" />
-      <rect x="55" y="74" width="14" height="36" rx="3" fill={ink} />
-      <rect x="12" y="96" width="44" height="12" rx="6" fill={accent} />
+      <rect x="14" y="6" width="74" height="34" rx="3" fill={accent} />
+      <rect x="12" y="34" width="78" height="24" rx="4" fill={ink} />
+      <path d="M90 46h14v26H62v12" fill="none" stroke={ink} strokeWidth="6" strokeLinejoin="round" />
+      <rect x="55" y="82" width="14" height="32" rx="3" fill={ink} />
     </>
   ),
   exterior: (ink, accent) => (
@@ -34,11 +35,16 @@ const scenes: Record<ArtKind, (ink: string, accent: string) => ReactNode> = {
       <rect x="50" y="50" width="20" height="20" fill={accent} transform="rotate(45 60 60)" />
     </>
   ),
+  // A filling knife (handle, ferrule, blade) smoothing a bead of filler, a crack still open beside it.
   preparation: (ink, accent) => (
     <>
-      <path d="M12 86 68 50l40 14-56 38z" fill={ink} />
-      <path d="M72 46 100 20" stroke={accent} strokeWidth="9" strokeLinecap="round" />
-      <rect x="10" y="104" width="100" height="8" rx="4" fill={accent} />
+      <path d="M96 30l-6 9 6 7-6 9 5 8-5 9" fill="none" stroke={ink} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+      <g transform="rotate(14 45 50)">
+        <rect x="38" y="6" width="14" height="40" rx="7" fill={accent} />
+        <rect x="35" y="44" width="20" height="9" rx="2" fill={ink} />
+        <path d="M35 53h20l18 38H17z" fill={ink} />
+      </g>
+      <path d="M8 98q22-8 52-4t50 0v12q-40 4-102 4z" fill={accent} />
     </>
   ),
   weatherboards: (ink, accent) => (
