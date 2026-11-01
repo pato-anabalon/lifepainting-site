@@ -1,10 +1,16 @@
 import type { Metadata } from "next";
-import { faq, site } from "@/lib/content";
+import { faq, ogImage, site } from "@/lib/content";
 
 /** Canonical origin. lifepaintingdec.co.nz is the confirmed production domain. */
 export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://lifepaintingdec.co.nz").replace(/\/$/, "");
 
 export type RouteKey = "home" | "privacy" | "thankYou";
+
+/**
+ * Shared social image (src/app/opengraph-image.tsx). Listed explicitly because a route that sets its
+ * own `openGraph` replaces the file-based image Next adds by default (privacy and thank-you lost it).
+ */
+const SHARE_IMAGE = { url: "/opengraph-image", width: 1200, height: 630, alt: ogImage.alt, type: "image/png" };
 
 type RouteSeo = {
   path: string;
@@ -60,8 +66,9 @@ export function buildMetadata(key: RouteKey): Metadata {
       title: r.title,
       description: r.description,
       url,
+      images: [SHARE_IMAGE],
     },
-    twitter: { card: "summary_large_image", title: r.title, description: r.description },
+    twitter: { card: "summary_large_image", title: r.title, description: r.description, images: [SHARE_IMAGE] },
   };
 }
 
