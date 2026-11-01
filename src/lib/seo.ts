@@ -1,8 +1,18 @@
 import type { Metadata } from "next";
 import { faq, ogImage, site } from "@/lib/content";
 
-/** Canonical origin. lifepaintingdec.co.nz is the confirmed production domain. */
-export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://lifepaintingdec.co.nz").replace(/\/$/, "");
+/**
+ * Canonical origin, used for canonical links, og:url / og:image, JSON-LD, robots and the sitemap.
+ * 1. NEXT_PUBLIC_SITE_URL, if set (manual override).
+ * 2. VERCEL_PROJECT_PRODUCTION_URL: the project's production domain, set by Vercel on every build
+ *    (host only). It is the *.vercel.app URL until a custom domain is connected, then that domain,
+ *    with no code or env change.
+ * 3. lifepaintingdec.co.nz, the confirmed production domain (local builds, other hosts).
+ */
+const vercelProduction = process.env.VERCEL_PROJECT_PRODUCTION_URL;
+export const SITE_URL = (
+  process.env.NEXT_PUBLIC_SITE_URL ?? (vercelProduction ? `https://${vercelProduction}` : "https://lifepaintingdec.co.nz")
+).replace(/\/$/, "");
 
 export type RouteKey = "home" | "privacy" | "thankYou";
 
@@ -26,7 +36,8 @@ export const routes: Record<RouteKey, RouteSeo> = {
     path: "/",
     title: "Painters in Auckland | Interior & Exterior Painting",
     description:
-      "Life Painting & Decorating: interior, exterior and decorative painting plus GIB stopping and skimming for homes across Auckland, the North Shore and Auckland Central. Get a free quote.",
+      // 142 characters: under Google's ~155 cut-off (was 184 and got truncated in previews).
+      "Interior, exterior and decorative painting for Auckland homes, with careful preparation and GIB stopping. Get a free quote from Life Painting.",
     index: true,
     breadcrumb: "Home",
   },
