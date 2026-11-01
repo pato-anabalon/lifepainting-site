@@ -38,7 +38,7 @@ See `.env.example`. Nothing is required for Phase 1. Phase 3 needs `RESEND_API_K
 mode and must never report fake success in production.
 
 ## Deploy
-Push to GitHub, import the repo in Vercel, set the env vars above and `NEXT_PUBLIC_SITE_URL`. Production domain: `lifepaintingdec.co.nz`.
+Push to GitHub, import the repo in Vercel and set the env vars above. Production domain: `lifepaintingdec.co.nz`. The site's absolute URLs (canonical, og:image, sitemap) follow Vercel's production domain automatically (`VERCEL_PROJECT_PRODUCTION_URL`: the *.vercel.app URL until the custom domain is connected); set `NEXT_PUBLIC_SITE_URL` only to override it. After connecting the domain, redeploy once so the URLs switch.
 
 ## More docs
 [`Life_Painting_PROJECT_CONTEXT.md`](./Life_Painting_PROJECT_CONTEXT.md) · [`SEO_WORKLOG.md`](./SEO_WORKLOG.md) · [`AGENTS.md`](./AGENTS.md)
