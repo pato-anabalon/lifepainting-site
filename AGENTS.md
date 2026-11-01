@@ -8,7 +8,7 @@ All commercial copy in `src/lib/content.ts`; all metadata/JSON-LD in `src/lib/se
 Server Components by default; Client Components only for small interactive islands. Use Life Painting names (`LifePaintingPreloader`, …), never reference external sites.
 
 ## Conventions
-Mobile-first. Shared components take explicit `surface="light" | "dark"` variants rather than duplicates. Don't make everything a pill: Button ≠ TextLink ≠ MetaChip.
+Mobile-first. Shared components take explicit `surface="light" | "dark"` variants rather than duplicates. Don't make everything a pill: Button ≠ TextLink.
 Stable `data-testid` names describe function + context (`home-hero-quote-button`); never rename them casually.
 
 ## Design skills
@@ -30,7 +30,7 @@ The owner commits and pushes; never commit or push.
 Unique title/description/canonical per route, explicit index state in `seo.ts`, one H1 per route, update `SEO_WORKLOG.md` with changes. No fake ratings in JSON-LD.
 
 ## Animation
-Separate `scrub`, `once`, `hover`, `preloader` modules. `useGSAP`/`gsap.context` with cleanup, scoped per section, transform/opacity, honour `prefers-reduced-motion` with a static fallback.
+Keep the animation kinds apart: `once` and `preloader` modules in `src/lib/motion/`, hovers in CSS, scrubs with their component (the hero collage's scroll lift). `useGSAP`/`gsap.context` with cleanup, scoped per section, transform/opacity, honour `prefers-reduced-motion` with a static fallback.
 `once` never repeats; `scrub` never becomes autoplay; entrance animations never replace hovers.
 Hero photo collage (`LifeHeroCollage`, helpers in `src/lib/motion/smooth.ts`): static by default; mouse parallax and scroll lift only with JS + motion allowed (scroll part is a scrub, never autoplay).
 

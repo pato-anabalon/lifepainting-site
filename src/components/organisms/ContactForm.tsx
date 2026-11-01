@@ -30,7 +30,7 @@ export function ContactForm() {
   const [status, setStatus] = useState<Status>("idle");
   const started = useRef(false);
   const heading = useRef<HTMLHeadingElement>(null);
-  const first = useRef(true);
+  const shownStep = useRef(step);
 
   // Prefill the service from `?service=` (state adjusted during render, per React guidance).
   const serviceParam = params.get("service");
@@ -42,12 +42,12 @@ export function ContactForm() {
     }
   }
 
-  // Move focus to the step heading when the step changes (not on first render).
+  // Move focus to the step heading when the step changes (not on first render). Compares with the
+  // last step rather than a "first run" flag: React runs effects twice on mount in development, which
+  // made a flag fire on load and scroll the page to the form.
   useEffect(() => {
-    if (first.current) {
-      first.current = false;
-      return;
-    }
+    if (shownStep.current === step) return;
+    shownStep.current = step;
     heading.current?.focus();
   }, [step]);
 

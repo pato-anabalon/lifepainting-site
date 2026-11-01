@@ -202,7 +202,25 @@ html[data-lp-preloader="pending"] {
     gap: 10vw;
   }
 }
-@media (prefers-reduced-motion: no-preference) {
+/* Mobile: no photo collage (too busy on a phone); ambient brush strokes paint the wall instead. */
+.lp-strokes {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+@media (max-width: 767.98px) {
+  .lp-collage-layer {
+    display: none;
+  }
+}
+@media (min-width: 768px) {
+  .lp-strokes {
+    display: none;
+  }
+}
+/* The scroll lift (sticky stage over a taller track) only runs with the collage, 768px and up. */
+@media (prefers-reduced-motion: no-preference) and (min-width: 768px) {
   html[data-lp-preloader] .lp-collage {
     height: 170svh;
   }

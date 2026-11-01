@@ -43,14 +43,15 @@ const MOUSE_TAU = 520;
 const INTRO_DELAY = 200;
 const INTRO_MS = 1400;
 
-type Props = { photos: Array<{ src: string }>; children: ReactNode };
+/** `backdrop` replaces the collage below 768px (see .lp-strokes in globals.css). */
+type Props = { photos: Array<{ src: string }>; backdrop?: ReactNode; children: ReactNode };
 
 /**
  * Mock-up hero: a floating collage that drifts with the mouse (fine pointers only) and, on scroll,
  * lifts, grows and fades away behind the sticky headline. One rAF loop; it stops when everything
  * has caught up. Static (no JS / reduced motion): collage at rest, one screen tall.
  */
-export function LifeHeroCollage({ photos, children }: Props) {
+export function LifeHeroCollage({ photos, backdrop, children }: Props) {
   const track = useRef<HTMLDivElement>(null);
   const stage = useRef<HTMLDivElement>(null);
   const layer = useRef<HTMLDivElement>(null);
@@ -214,8 +215,9 @@ export function LifeHeroCollage({ photos, children }: Props) {
                         src={photo.src}
                         alt=""
                         fill
-                        loading="eager"
-                        sizes="(min-width: 1024px) 20vw, (min-width: 768px) 30vw, 40vw"
+                        // Lazy: below 768px the collage is display:none, so the photos are never fetched.
+                        loading="lazy"
+                        sizes="(min-width: 1024px) 20vw, 30vw"
                         className="object-cover"
                         style={{ objectPosition: tile.focus ?? "50% 50%" }}
                       />
@@ -226,6 +228,7 @@ export function LifeHeroCollage({ photos, children }: Props) {
             </div>
           </div>
         </div>
+        {backdrop}
         <div className="relative z-10 flex w-full justify-center px-4">
           {children}
         </div>

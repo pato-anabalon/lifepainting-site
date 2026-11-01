@@ -111,7 +111,8 @@ export const hero = {
 
 /**
  * Hero collage (HeroSection). Ambient pictures of homes, rooms and the trade, supplied by
- * the owner (2026-11-01). Add a `credit` to any photo that needs one; the footer lists only those
+ * the owner (2026-11-01; free licence, no credit needed). The shopfront picture is an illustration:
+ * the business has no physical shop. Add a `credit` to any photo that needs one; the footer lists only those
  * (and hides the credits block when there are none). Order = tile order in LifeHeroCollage.
  */
 export const heroCollage = {

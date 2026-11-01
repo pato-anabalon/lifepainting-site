@@ -2,10 +2,12 @@ import Image from "next/image";
 import { Button } from "@/components/atoms/Button";
 import { LifeHeroCollage } from "@/components/organisms/LifeHeroCollage";
 import { LifeHeroReveal } from "@/components/organisms/LifeHeroReveal";
+import { LifeHeroStrokes } from "@/components/organisms/LifeHeroStrokes";
 import { hero, heroCollage, sections, site } from "@/lib/content";
 
 /**
- * Hero: owns the page H1. Logo and centred headline over a floating photo collage with
+ * Hero: owns the page H1. Logo and centred headline over a floating photo collage (768px and up;
+ * below that brush strokes keep painting the wall instead, LifeHeroStrokes) with
  * mouse parallax and a scroll lift-away. No panel or text backings: headline and intro carry the
  * buttons' hard offset shadow, in cream (`lp-text-offset`). Full screen: the
  * header stays hidden until the hero has been scrolled past (`data-lp-header-auto`).
@@ -19,7 +21,7 @@ export function HeroSection() {
       data-lp-header-auto
       className="relative bg-cream text-forest"
     >
-      <LifeHeroCollage photos={heroCollage.photos}>
+      <LifeHeroCollage photos={heroCollage.photos} backdrop={<LifeHeroStrokes />}>
         <div className="max-w-[60rem] px-2 py-8 text-center sm:px-8">
           <LifeHeroReveal className="flex flex-col items-center">
             {/* The wide logo sits in a square 1563px canvas; this box crops it to the artwork band. */}

@@ -30,7 +30,7 @@ npm run verify     # lint + typecheck + test + build
 |---|---|
 | `/` | Phase 1 skeleton (hero only). Sections are built in Phase 2 |
 | `/not-found` | noindex |
-Routes: `/`, `/privacy`, `/thank-you` (noindex). Hero = floating photo collage from `public/hero-collage` with mouse parallax (see PROJECT_CONTEXT). Preloader brush sprite: `public/brush/brush-stroke-cream.webp` (from a public CodePen; licence to confirm before launch). See `Life_Painting_PROJECT_CONTEXT.md` for the 9-section plan.
+Routes: `/`, `/privacy`, `/thank-you` (noindex). Hero = floating photo collage from `public/hero-collage` with mouse parallax (see PROJECT_CONTEXT). Preloader brush sprite: `public/brush/brush-stroke-cream.webp` (from a public CodePen; free licence, confirmed by the owner 2026-11-01). See `Life_Painting_PROJECT_CONTEXT.md` for the 9-section plan.
 
 ## Environment variables
 See `.env.example`. Nothing is required for Phase 1. Phase 3 needs `RESEND_API_KEY`, `CONTACT_TO_EMAIL`,
