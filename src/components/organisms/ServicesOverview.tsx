@@ -42,7 +42,7 @@ const ART_BY_TITLE: Record<string, ArtKind> = {
 export function ServicesOverview() {
   const { title, intro, askLabel, tiles } = servicesOverview;
   return (
-    <section id={sections["services-overview"].anchor} data-testid="home-services-overview-section" aria-labelledby="overview-title" className="bg-cream py-20 sm:py-28 lg:py-36">
+    <section id={sections["services-overview"].anchor} data-testid="home-services-overview-section" data-lp-consent-after aria-labelledby="overview-title" className="bg-cream py-20 sm:py-28 lg:py-36">
       <Container>
         <ScrollReveal>
           <div data-reveal>

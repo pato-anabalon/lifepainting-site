@@ -44,3 +44,9 @@ Google Business Profile (service-area business, no street address shown) · coll
 
 ## Phase 3
 - Added `/privacy` (index: true, in sitemap, breadcrumb) and `/thank-you` (index: false, noindex/nofollow, excluded from sitemap). Form needs JS, so it is not in the prerendered HTML; no SEO content depends on it. Analytics only after consent.
+
+## Hero (2026-11-01)
+- The scroll image sequence was replaced by the photo collage (`HeroSection`). H1 unchanged, server-rendered, one per route. Collage photos are decorative (`alt=""`, layer `aria-hidden`); the hero logo carries the business name as alt. LCP candidate is likely the hero logo, the H1 or a collage photo (all eager; not measured yet). The sequence's poster image and its H2 overlays are gone. No title, canonical or JSON-LD changes.
+
+## Anchors (2026-10-31)
+- Home anchors: "What we paint and prepare" is now `#services` (menu "Services", hero "See what we do"); "How we look after your home" moved from `#services` to `#looking-after-your-home`. No route, title, canonical or JSON-LD changes.

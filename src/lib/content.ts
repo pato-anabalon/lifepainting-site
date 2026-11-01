@@ -35,16 +35,47 @@ export type SectionId =
 
 export const sections: Record<
   SectionId,
-  { anchor: string; navLabel: string | null; evidence: Evidence; visible: boolean }
+  {
+    anchor: string;
+    navLabel: string | null;
+    evidence: Evidence;
+    visible: boolean;
+  }
 > = {
   hero: { anchor: "top", navLabel: null, evidence: "ready", visible: true },
-  "services-overview": { anchor: "overview", navLabel: null, evidence: "ready", visible: true },
-  services: { anchor: "services", navLabel: "Services", evidence: "ready", visible: true },
+  // "Services" in the menu lands on the overview ("What we paint and prepare"), the first services section.
+  "services-overview": {
+    anchor: "services",
+    navLabel: "Services",
+    evidence: "ready",
+    visible: true,
+  },
+  services: {
+    anchor: "looking-after-your-home",
+    navLabel: null,
+    evidence: "ready",
+    visible: true,
+  },
   // Pending: real photos / reviews are still being collected. Thumbs are slots for them.
-  proof: { anchor: "how-we-work", navLabel: "How we work", evidence: "pending", visible: true },
-  work: { anchor: "work", navLabel: "Our work", evidence: "pending", visible: true },
+  proof: {
+    anchor: "how-we-work",
+    navLabel: "How we work",
+    evidence: "pending",
+    visible: true,
+  },
+  work: {
+    anchor: "work",
+    navLabel: "Our work",
+    evidence: "pending",
+    visible: true,
+  },
   faq: { anchor: "faq", navLabel: "FAQ", evidence: "ready", visible: true },
-  contact: { anchor: "contact", navLabel: null, evidence: "ready", visible: true },
+  contact: {
+    anchor: "contact",
+    navLabel: null,
+    evidence: "ready",
+    visible: true,
+  },
 };
 
 /** Pending sections only render outside production, so placeholders can never ship. */
@@ -58,7 +89,11 @@ export function isSectionVisible(id: SectionId): boolean {
 export const nav = {
   items: (Object.keys(sections) as SectionId[])
     .filter((id) => sections[id].navLabel && isSectionVisible(id))
-    .map((id) => ({ id, label: sections[id].navLabel as string, href: `/#${sections[id].anchor}` })),
+    .map((id) => ({
+      id,
+      label: sections[id].navLabel as string,
+      href: `/#${sections[id].anchor}`,
+    })),
   cta: { label: "Get a quote", href: "/#contact" },
   mobileMenuOpen: "Open menu",
   mobileMenuClose: "Close menu",
@@ -72,7 +107,38 @@ export const hero = {
     "Interior, exterior and decorative painting for Auckland homes, with careful preparation and clear communication from first conversation to final coat.",
   primaryCta: { label: "Get a free quote", href: "/#contact" },
   secondaryCta: { label: "See what we do", href: "/#services" },
-  chips: ["Auckland", "North Shore", "Auckland Central"],
+};
+
+/**
+ * Hero collage (HeroSection). Ambient pictures of homes, rooms and the trade, supplied by
+ * the owner (2026-11-01). Add a `credit` to any photo that needs one; the footer lists only those
+ * (and hides the credits block when there are none). Order = tile order in LifeHeroCollage.
+ */
+export const heroCollage = {
+  photos: [
+    { src: "/hero-collage/1-optimized.avif", credit: null },
+    { src: "/hero-collage/2-optimized.avif", credit: null },
+    { src: "/hero-collage/3-optimized.avif", credit: null },
+    { src: "/hero-collage/4-optimized.avif", credit: null },
+    { src: "/hero-collage/5-optimized.avif", credit: null },
+    { src: "/hero-collage/6-optimized.avif", credit: null },
+    { src: "/hero-collage/7-optimized.avif", credit: null },
+    { src: "/hero-collage/8-optimized.avif", credit: null },
+    { src: "/hero-collage/9-optimized.avif", credit: null },
+    { src: "/hero-collage/10-optimized.avif", credit: null },
+    { src: "/hero-collage/11-optimized.avif", credit: null },
+    { src: "/hero-collage/12-optimized.avif", credit: null },
+  ] as Array<{
+    src: string;
+    credit: {
+      title: string;
+      creator: string;
+      license: string;
+      url: string;
+    } | null;
+  }>,
+  creditsLabel: "Photo credits",
+  creditsIntro: "Hero collage photos:",
 };
 
 export type ServiceKey = "interior" | "exterior" | "decorative" | "preparation";
@@ -97,7 +163,13 @@ export const services: Array<{
     title: "Exterior Painting",
     summary:
       "Protect and refresh your home with exterior painting designed for Auckland conditions. We prepare and paint weatherboards, masonry, roofs, fences and other exterior surfaces, using quality products and proven systems for a durable, long-lasting finish.",
-    details: ["Weatherboards", "Masonry", "Roofs", "Fences", "Exterior surfaces"],
+    details: [
+      "Weatherboards",
+      "Masonry",
+      "Roofs",
+      "Fences",
+      "Exterior surfaces",
+    ],
     cta: "Quote exterior painting",
   },
   {
@@ -113,7 +185,12 @@ export const services: Array<{
     title: "Preparation & Repairs",
     summary:
       "A great finish starts with proper preparation. We provide GIB stopping, skimming, surface preparation and minor repairs to create a smooth, sound surface before painting, helping achieve a better-looking and longer-lasting result.",
-    details: ["GIB stopping", "Skimming", "Surface preparation", "Minor repairs"],
+    details: [
+      "GIB stopping",
+      "Skimming",
+      "Surface preparation",
+      "Minor repairs",
+    ],
     cta: "Ask about prep & repairs",
   },
 ];
@@ -125,39 +202,86 @@ export function contactHref(service?: ServiceKey): string {
 
 export const servicesOverview = {
   title: "What we paint and prepare",
-  intro: "Not sure which service you need? Start here, then tell us about your home and we'll point you the right way.",
+  intro:
+    "Not sure which service you need? Start here, then tell us about your home and we'll point you the right way.",
   askLabel: "Ask about",
   tiles: [
-    { key: "interior" as ServiceKey, title: "Interior Painting", note: "Walls, ceilings, trim and doors" },
-    { key: "exterior" as ServiceKey, title: "Exterior Painting", note: "Built for Auckland conditions" },
-    { key: "exterior" as ServiceKey, title: "Weatherboards", note: "Prepared, primed, painted" },
-    { key: "exterior" as ServiceKey, title: "Masonry & brick", note: "Brickwork and more" },
+    {
+      key: "interior" as ServiceKey,
+      title: "Interior Painting",
+      note: "Walls, ceilings, trim and doors",
+    },
+    {
+      key: "exterior" as ServiceKey,
+      title: "Exterior Painting",
+      note: "Built for Auckland conditions",
+    },
+    {
+      key: "exterior" as ServiceKey,
+      title: "Weatherboards",
+      note: "Prepared, primed, painted",
+    },
+    {
+      key: "exterior" as ServiceKey,
+      title: "Masonry & brick",
+      note: "Brickwork and more",
+    },
     { key: "exterior" as ServiceKey, title: "Roofs", note: "Roof painting" },
-    { key: "exterior" as ServiceKey, title: "Fences", note: "Fences and surfaces" },
-    { key: "decorative" as ServiceKey, title: "Decorative Finishes", note: "Feature walls and textures" },
-    { key: "preparation" as ServiceKey, title: "Preparation & Repairs", note: "GIB stopping and skimming" },
+    {
+      key: "exterior" as ServiceKey,
+      title: "Fences",
+      note: "Fences and surfaces",
+    },
+    {
+      key: "decorative" as ServiceKey,
+      title: "Decorative Finishes",
+      note: "Feature walls and textures",
+    },
+    {
+      key: "preparation" as ServiceKey,
+      title: "Preparation & Repairs",
+      note: "GIB stopping and skimming",
+    },
   ],
 };
 
 export const servicesSection = {
   title: "How we look after your home",
-  intro: "Painting is at the heart of what we do. Everything else exists to make the finish better and longer-lasting.",
+  intro:
+    "Painting is at the heart of what we do. Everything else exists to make the finish better and longer-lasting.",
 };
 
 /** "How we work": brand values, stated qualitatively. No reviews or numbers. */
 export const proof = {
   title: "How we run every job",
-  intro: "We can't hand you a stack of badges, but we can tell you how we run every job.",
+  intro:
+    "We can't hand you a stack of badges, but we can tell you how we run every job.",
   values: [
-    { title: "Do what we say", body: "We keep our commitments, on timing and on scope." },
-    { title: "Take pride in the finish", body: "Careful preparation first, then a clean, detailed result." },
-    { title: "Treat every property like it matters", body: "A neat, careful approach from start to finish." },
-    { title: "The small things are part of the job", body: "The details are where a good finish is won." },
-    { title: "Keep people informed", body: "Clear communication at every step." },
+    {
+      title: "Do what we say",
+      body: "We keep our commitments, on timing and on scope.",
+    },
+    {
+      title: "Take pride in the finish",
+      body: "Careful preparation first, then a clean, detailed result.",
+    },
+    {
+      title: "Treat every property like it matters",
+      body: "A neat, careful approach from start to finish.",
+    },
+    {
+      title: "The small things are part of the job",
+      body: "The details are where a good finish is won.",
+    },
+    {
+      title: "Keep people informed",
+      body: "Clear communication at every step.",
+    },
   ],
   testimonials: {
     title: "Kind words from our clients",
-    pending: "PENDING: real client comments and written permission to publish them.",
+    pending:
+      "PENDING: real client comments and written permission to publish them.",
     slots: 3,
   },
 };
@@ -167,9 +291,27 @@ export const work = {
   intro: "A look at recent projects across Auckland.",
   pendingNote: "PENDING: real project photos (before/after and detail shots).",
   tiers: [
-    { key: "interior", title: "Interior", note: "Walls, ceilings and trim", highlight: false, slots: 3 },
-    { key: "exterior", title: "Exterior", note: "Weatherboards, masonry, roofs and fences", highlight: true, slots: 3 },
-    { key: "finishes", title: "Finishes", note: "Decorative and specialty work", highlight: false, slots: 3 },
+    {
+      key: "interior",
+      title: "Interior",
+      note: "Walls, ceilings and trim",
+      highlight: false,
+      slots: 3,
+    },
+    {
+      key: "exterior",
+      title: "Exterior",
+      note: "Weatherboards, masonry, roofs and fences",
+      highlight: true,
+      slots: 3,
+    },
+    {
+      key: "finishes",
+      title: "Finishes",
+      note: "Decorative and specialty work",
+      highlight: false,
+      slots: 3,
+    },
   ],
 };
 
@@ -202,7 +344,14 @@ export const faq = {
 export const contact = {
   title: "Ready to give your home a new life?",
   intro: "Let's talk about your next project.",
-  marquee: ["Interior", "Exterior", "Decorative Finishes", "Preparation & Repairs", "Auckland", "North Shore"],
+  marquee: [
+    "Interior",
+    "Exterior",
+    "Decorative Finishes",
+    "Preparation & Repairs",
+    "Auckland",
+    "North Shore",
+  ],
   /** Until the step form ships (Phase 3), the real channels are a call and an email. */
   callLabel: "Call 027 375 9093",
   emailLabel: "Email us",
@@ -238,7 +387,12 @@ export const contactForm = {
   },
   project: {
     areaLabel: "Which area is the property in?",
-    areaOptions: ["Auckland", "North Shore", "Auckland Central", "Somewhere else"],
+    areaOptions: [
+      "Auckland",
+      "North Shore",
+      "Auckland Central",
+      "Somewhere else",
+    ],
     areaError: "Choose an area.",
     messageLabel: "Tell us about the job",
     messageHint: "Rooms or surfaces involved, and when you'd like to start.",
@@ -261,7 +415,8 @@ export const contactForm = {
     emailError: "Enter a valid email address.",
     phoneLabel: "Phone (optional)",
     phoneError: "That phone number doesn't look right.",
-    consentLabel: "I agree that Life Painting & Decorating may contact me about this enquiry.",
+    consentLabel:
+      "I agree that Life Painting & Decorating may contact me about this enquiry.",
     consentError: "Please tick this so we can reply.",
     privacyLead: "How we handle your details:",
     privacyLink: "Privacy policy",
@@ -270,8 +425,10 @@ export const contactForm = {
   back: "Back",
   submit: "Send enquiry",
   sending: "Sending…",
-  genericError: "Something went wrong. Please try again, or call or email us directly.",
-  unavailable: "The enquiry form isn't available right now. Please call or email us instead.",
+  genericError:
+    "Something went wrong. Please try again, or call or email us directly.",
+  unavailable:
+    "The enquiry form isn't available right now. Please call or email us instead.",
 };
 
 export const consent = {
@@ -291,7 +448,8 @@ export const thankYou = {
 export const privacy = {
   title: "Privacy policy",
   updated: "Last updated: October 2026",
-  intro: "Life Painting & Decorating (Auckland, New Zealand) respects your privacy. This page explains what we collect through this website and why.",
+  intro:
+    "Life Painting & Decorating (Auckland, New Zealand) respects your privacy. This page explains what we collect through this website and why.",
   blocks: [
     {
       heading: "What we collect",
@@ -303,7 +461,7 @@ export const privacy = {
     },
     {
       heading: "Analytics and cookies",
-      body: "With your permission we use Vercel Web Analytics to understand how the site is used (for example which buttons are clicked). It is switched on only if you accept, and you can change your choice at any time using \"Cookie preferences\" in the footer.",
+      body: 'With your permission we use Vercel Web Analytics to understand how the site is used (for example which buttons are clicked). It is switched on only if you accept, and you can change your choice at any time using "Cookie preferences" in the footer.',
     },
     {
       heading: "Who handles your data",

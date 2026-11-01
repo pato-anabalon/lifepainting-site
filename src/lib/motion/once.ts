@@ -6,7 +6,10 @@ import { whenLifePreloaderDone } from "./preloader";
  * Entrance for above-the-fold content: waits for the preloader, then plays once.
  * Returns a cleanup that cancels the wait and reverts the tween.
  */
-export function lifeEntranceOnLoad(targets: gsap.TweenTarget, vars: gsap.TweenVars = {}) {
+export function lifeEntranceOnLoad(selector: gsap.TweenTarget, vars: gsap.TweenVars = {}) {
+  // Resolve now, inside the caller's scope. The preloader fires its "done" event from inside its own
+  // GSAP callback, where a selector string would be resolved against the preloader and match nothing.
+  const targets = gsap.utils.toArray<Element>(selector);
   let tween: gsap.core.Tween | undefined;
   // Hide immediately (before the preloader ends) so there is no flash of final state.
   gsap.set(targets, { autoAlpha: 0, y: vars.y ?? 24 });

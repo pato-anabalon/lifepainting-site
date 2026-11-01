@@ -17,6 +17,36 @@
   --lp-focus: var(--lp-forest);
 
   --lp-header-h: 4.25rem;
+  /* Space the hero leaves for the header; 0 when the header hides over the hero (see .lp-header). */
+  --lp-hero-offset: var(--lp-header-h);
+}
+
+/* Hard offset shadow for hero type in the page background colour (cream): reads as a cut-out over photos. */
+.lp-text-offset {
+  text-shadow: 0.05em 0.05em 0 var(--lp-cream);
+}
+
+/*
+ * Header over a full-screen hero: a section marked [data-lp-header-auto] hides the header until it
+ * has been scrolled past (Header.tsx sets [data-shown]). Only when JS ran, so without JS the header
+ * stays in place. Keyboard focus inside the header always brings it back (:focus-visible, so a mouse click on the logo
+ * does not pin it open).
+ */
+html[data-lp-preloader]:has([data-lp-header-auto]) {
+  --lp-hero-offset: 0px;
+}
+html[data-lp-preloader]:has([data-lp-header-auto]) .lp-header {
+  position: fixed;
+  inset-inline: 0;
+  top: 0;
+}
+html[data-lp-preloader]:has([data-lp-header-auto]) .lp-header:not([data-shown]):not(:has(:focus-visible)) {
+  transform: translate3d(0, -100%, 0);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .lp-header {
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  }
 }
 
 @theme inline {
@@ -126,6 +156,77 @@ html[data-lp-preloader="pending"] {
   }
   .skip-link:focus {
     top: 1rem;
+  }
+}
+
+
+/*
+ * Hero collage (HeroSection). Default = static: one screen, collage at rest behind the
+ * headline (no JS / reduced motion). Scroll track + intro only with JS and motion allowed.
+ */
+.lp-collage-stage {
+  position: relative;
+  min-height: calc(100svh - var(--lp-hero-offset));
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-block: 4rem;
+}
+.lp-collage-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  transform-origin: 50% 50%;
+}
+.lp-collage-center {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+.lp-collage-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 40vw);
+  gap: 15vw;
+  place-items: center stretch;
+}
+@media (min-width: 768px) {
+  .lp-collage-grid {
+    grid-template-columns: repeat(4, 30vw);
+  }
+}
+@media (min-width: 1024px) {
+  .lp-collage-grid {
+    grid-template-columns: repeat(4, 20vw);
+    gap: 10vw;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  html[data-lp-preloader] .lp-collage {
+    height: 170svh;
+  }
+  html[data-lp-preloader] .lp-collage-stage {
+    position: sticky;
+    top: var(--lp-hero-offset);
+    height: calc(100svh - var(--lp-hero-offset));
+    min-height: 0;
+    padding-block: 0;
+  }
+  html[data-lp-preloader] .lp-collage-layer,
+  html[data-lp-preloader] .lp-collage-tile {
+    will-change: transform;
+  }
+  /* 3D stage: the grid tilts inside this perspective and each tile sits at its own depth. */
+  html[data-lp-preloader] .lp-collage-center {
+    perspective: 1200px;
+    opacity: 0; /* hidden until the intro runs (JS sets the inline style) */
+    will-change: opacity;
+  }
+  html[data-lp-preloader] .lp-collage-grid {
+    transform: scale3d(0.8, 0.8, 1);
+    transform-style: preserve-3d;
+    will-change: transform;
   }
 }
 

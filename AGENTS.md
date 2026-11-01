@@ -32,6 +32,7 @@ Unique title/description/canonical per route, explicit index state in `seo.ts`, 
 ## Animation
 Separate `scrub`, `once`, `hover`, `preloader` modules. `useGSAP`/`gsap.context` with cleanup, scoped per section, transform/opacity, honour `prefers-reduced-motion` with a static fallback.
 `once` never repeats; `scrub` never becomes autoplay; entrance animations never replace hovers.
+Hero photo collage (`LifeHeroCollage`, helpers in `src/lib/motion/smooth.ts`): static by default; mouse parallax and scroll lift only with JS + motion allowed (scroll part is a scrub, never autoplay).
 
 ## Update docs with every change
 README, PROJECT_CONTEXT, SEO_WORKLOG.

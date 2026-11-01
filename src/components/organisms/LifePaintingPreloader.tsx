@@ -4,17 +4,29 @@ import Image from "next/image";
 import { useRef, useState } from "react";
 import { LIFE_MOTION_OK, gsap, registerLifeMotion, useGSAP } from "@/lib/motion/register";
 import { markLifePreloaderDone } from "@/lib/motion/preloader";
+import { buildBrushWipe, loadBrushSprite } from "@/lib/motion/brushWipe";
 
 registerLifeMotion();
 
 const MONOGRAM = "/logos/icon-for-dark.png";
 
+/** Brush strokes, all rows (ms). */
+const BRUSH_MS = 1500;
+/** Longest wait for the brush sprite after the monogram; past it the overlay just fades out. */
+const SPRITE_WAIT_MS = 2500;
+/** Hard deadline from mount: the overlay never stays longer than this, whatever fails. */
+const DEADLINE_MS = 1600 + SPRITE_WAIT_MS + BRUSH_MS + 300 + 1500;
+
 /**
- * 3 s intro: monogram fades in, a light shimmer sweeps across it, then the overlay fades out (ease-out).
- * Once per session. Skipped with reduced motion. Decorative: hidden from assistive tech.
+ * ~3.4 s intro: monogram fades in and a light shimmer sweeps across it; then rows of a real brush
+ * stroke paint the page colour (cream) over everything, top-left to bottom-right (brushWipe.ts).
+ * The overlay then fades and the preloader is marked done, so the hero (collage + copy) appears on
+ * a cream screen that matches the paint. Once per session. Skipped with reduced motion.
+ * Decorative: hidden from assistive tech.
  */
 export function LifePaintingPreloader() {
   const root = useRef<HTMLDivElement>(null);
+  const paint = useRef<HTMLDivElement>(null);
   const [gone, setGone] = useState(false);
 
   useGSAP(
@@ -25,19 +37,46 @@ export function LifePaintingPreloader() {
         setGone(true);
         return;
       }
+      // JS is running: the boot watchdog is no longer needed; this component keeps its own deadline.
+      clearTimeout(window.__lpPreloaderWatchdog);
+      // Start loading the sprite now: the monogram gives it ~1.6 s.
+      const sprite = loadBrushSprite();
+      let brush: gsap.core.Timeline | undefined;
+      let cancelled = false;
+      const finish = () => {
+        clearTimeout(deadline);
+        markLifePreloaderDone();
+        setGone(true);
+      };
+      const deadline = window.setTimeout(finish, DEADLINE_MS);
+      const fadeOut = () => void gsap.to(el, { autoAlpha: 0, duration: 0.3, ease: "power1.out", onComplete: finish });
+      const startBrush = async () => {
+        const host = paint.current;
+        const ready = await Promise.race([sprite, new Promise<boolean>((r) => setTimeout(r, SPRITE_WAIT_MS, false))]);
+        if (cancelled) return;
+        if (!ready || !host) return fadeOut();
+        brush = buildBrushWipe(host, BRUSH_MS);
+        // Paint, then fade the overlay (and any specks of green between bristles) onto the cream hero.
+        brush
+          .to(el, { autoAlpha: 0, duration: 0.3, ease: "power1.out" })
+          .call(finish)
+          .play();
+      };
       const mm = gsap.matchMedia();
       mm.add(LIFE_MOTION_OK, () => {
-        const tl = gsap.timeline({
-          onComplete: () => {
-            markLifePreloaderDone();
-            setGone(true);
-          },
-        });
+        const tl = gsap.timeline();
         tl.fromTo("[data-lp-mark]", { autoAlpha: 0, scale: 0.92 }, { autoAlpha: 1, scale: 1, duration: 0.5, ease: "power2.out" })
-          .fromTo("[data-lp-shine]", { backgroundPosition: "160% 0" }, { backgroundPosition: "-60% 0", duration: 1.9, ease: "power1.inOut" }, 0.4)
-          .to(el, { autoAlpha: 0, duration: 0.6, ease: "power2.out" }, 2.4);
+          .fromTo("[data-lp-shine]", { backgroundPosition: "160% 0" }, { backgroundPosition: "-60% 0", duration: 1.3, ease: "power1.inOut" }, 0.35)
+          // Run outside GSAP's callback scope (see once.ts): the brush owns the rest of the intro.
+          .call(() => void requestAnimationFrame(() => void startBrush()), [], 1.6);
       });
-      return () => mm.revert();
+      return () => {
+        cancelled = true;
+        clearTimeout(deadline);
+        brush?.kill();
+        paint.current?.replaceChildren();
+        mm.revert();
+      };
     },
     { scope: root },
   );
@@ -52,6 +91,7 @@ export function LifePaintingPreloader() {
       data-surface="dark"
       className="lp-preloader fixed inset-0 z-[100] flex items-center justify-center bg-forest"
     >
+      <div ref={paint} data-testid="site-preloader-paint" className="pointer-events-none absolute inset-0 z-10 overflow-hidden" />
       <div data-lp-mark className="relative size-44 sm:size-56">
         <Image src={MONOGRAM} alt="" fill sizes="224px" priority className="object-contain" />
         <div

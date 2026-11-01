@@ -3,7 +3,7 @@ import { Container } from "@/components/atoms/Container";
 import { ConsentPreferencesButton } from "@/components/atoms/ConsentPreferencesButton";
 import { Logo } from "@/components/atoms/Logo";
 import { TextLink } from "@/components/atoms/TextLink";
-import { footer, nav, services, site } from "@/lib/content";
+import { footer, heroCollage, nav, services, site } from "@/lib/content";
 
 export function Footer() {
   return (
@@ -56,6 +56,29 @@ export function Footer() {
           </ul>
         </div>
       </Container>
+
+      {heroCollage.photos.some((p) => p.credit) && (
+        <Container className="pb-2">
+          <details data-testid="site-footer-photo-credits" className="text-sm">
+            <summary className="cursor-pointer font-semibold underline decoration-sun decoration-2 underline-offset-4 hover:decoration-cream">{heroCollage.creditsLabel}</summary>
+            <p className="mt-3">{heroCollage.creditsIntro}</p>
+            <ul className="mt-2 space-y-1">
+              {heroCollage.photos.flatMap((p) =>
+                p.credit
+                  ? [
+                      <li key={p.src}>
+                        <a href={p.credit.url} className="underline decoration-sun underline-offset-2 hover:decoration-cream">
+                          {p.credit.title}
+                        </a>{" "}
+                        by {p.credit.creator}, {p.credit.license}
+                      </li>,
+                    ]
+                  : [],
+              )}
+            </ul>
+          </details>
+        </Container>
+      )}
 
       <Container className="flex flex-col gap-3 py-6 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-sm">{footer.copyright}</p>

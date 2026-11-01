@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useId, useRef, useState } from "react";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/atoms/Button";
@@ -8,13 +9,40 @@ import { Logo } from "@/components/atoms/Logo";
 import { nav } from "@/lib/content";
 
 /**
- * Sticky header. Client Component only for the mobile menu state.
- * Tracking for the CTA is added in Phase 3 through a small wrapper.
+ * Sticky header. Client Component for the mobile menu state and, on pages whose hero is marked
+ * `data-lp-header-auto`, to reveal the header once that hero has been scrolled past (CSS in
+ * globals.css hides it until `data-shown` is set).
  */
 export function Header() {
   const [open, setOpen] = useState(false);
+  const [shown, setShown] = useState(false);
   const panelId = useId();
+  const headerRef = useRef<HTMLElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
+  // The header lives in the layout, so look for the page's hero again on every route change.
+  const pathname = usePathname();
+
+  useEffect(() => {
+    const hero = document.querySelector<HTMLElement>("[data-lp-header-auto]");
+    if (!hero) return;
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      // Shown once the next section reaches the header's band.
+      setShown(hero.getBoundingClientRect().bottom <= (headerRef.current?.offsetHeight ?? 0));
+    };
+    const schedule = () => {
+      if (!raf) raf = requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule);
+    return () => {
+      window.removeEventListener("scroll", schedule);
+      window.removeEventListener("resize", schedule);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, [pathname]);
 
   useEffect(() => {
     if (!open) return;
@@ -30,13 +58,27 @@ export function Header() {
 
   return (
     <header
+      ref={headerRef}
       data-testid="site-header"
       data-surface="dark"
-      className="sticky top-0 z-50 bg-forest text-cream"
+      data-shown={shown || undefined}
+      className="lp-header sticky top-0 z-50 bg-forest text-cream"
       style={{ height: "var(--lp-header-h)" }}
     >
       <div className="mx-auto flex h-full w-full max-w-7xl items-center justify-between px-5 sm:px-8 lg:px-12">
-        <Link href="/" aria-label="Life Painting – home" data-testid="site-header-logo" className="flex items-center">
+        <Link
+          href="/"
+          aria-label="Life Painting – home"
+          data-testid="site-header-logo"
+          className="flex items-center"
+          onClick={(e) => {
+            // Already home: a same-URL navigation does not reliably scroll, so go to the top ourselves.
+            if (pathname !== "/") return;
+            e.preventDefault();
+            setOpen(false);
+            window.scrollTo({ top: 0 });
+          }}
+        >
           <Logo variant="wide" surface="dark" priority className="-my-3 w-24 sm:w-28" />
         </Link>
 
