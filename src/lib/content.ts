@@ -125,6 +125,12 @@ export const hero = {
  * the business has no physical shop. Add a `credit` to any photo that needs one; the footer lists only those
  * (and hides the credits block when there are none). Order = tile order in LifeHeroCollage.
  */
+/** Shared social image (src/app/opengraph-image.tsx): hero headline plus this line. */
+export const ogImage = {
+  line: "Interior, exterior and decorative painting for Auckland homes.",
+  alt: "Life Painting & Decorating: Good preparations. Better finishes. Interior, exterior and decorative painting in Auckland.",
+};
+
 export const heroCollage = {
   photos: [
     { src: "/hero-collage/1-optimized.avif", credit: null },

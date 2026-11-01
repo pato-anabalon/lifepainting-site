@@ -53,3 +53,7 @@ Google Business Profile (service-area business, no street address shown) · coll
 
 ## Navigation (2026-11-01)
 - New menu item "Our approach" → `#looking-after-your-home` (header and footer "Explore"). Internal anchor only; no route, title, canonical or JSON-LD changes. The desktop nav row now starts at 1024 px; below that the full-screen menu holds the same links.
+
+## Social share image (2026-11-01)
+- `src/app/opengraph-image.tsx` redesigned (1200×630, PNG, generated at build time, static): forest ground, wide logo, the hero headline in two lines ("Good preparations." cream, "Better finishes." yellow) in Montserrat Bold, the services line in Montserrat Medium, the atomic shapes top right and the cream wave divider along the foot. Copy and alt text in `content.ts` → `ogImage`. Fonts: static Montserrat 500/700 TTFs from Google Fonts in `src/app/_og/` with `OFL.txt` (ImageResponse cannot use the variable font or next/font).
+- `buildMetadata` now lists the image explicitly in `openGraph.images` and `twitter.images` (with alt, size, type): routes that set their own `openGraph` (privacy, thank-you) were replacing the file-based image and had no og:image. Checked: one og:image / twitter:image set per route. URLs are absolute from `SITE_URL` (`NEXT_PUBLIC_SITE_URL`, default lifepaintingdec.co.nz): on a preview deployment set `NEXT_PUBLIC_SITE_URL` to the preview URL, or the shared link will point at the production domain's image.
