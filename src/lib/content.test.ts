@@ -15,12 +15,14 @@ describe("content guardrails", () => {
     expect(site.phone.tel).toBe("+64273759093");
   });
 
-  it("never marks pending sections as production-visible", async () => {
-    const { isSectionVisible } = await import("@/lib/content");
+  // Mock-up mode (SHOW_PENDING_SECTIONS) is the only way a pending section reaches production.
+  // Once the flag goes back to false before launch, this is again a strict "never".
+  it("shows pending sections in production only in mock-up mode", async () => {
+    const { isSectionVisible, SHOW_PENDING_SECTIONS } = await import("@/lib/content");
     const prev = process.env.NODE_ENV;
     (process.env as Record<string, string>).NODE_ENV = "production";
     Object.entries(sections).forEach(([id, s]) => {
-      if (s.evidence === "pending") expect(isSectionVisible(id as keyof typeof sections)).toBe(false);
+      if (s.evidence === "pending") expect(isSectionVisible(id as keyof typeof sections)).toBe(SHOW_PENDING_SECTIONS);
     });
     (process.env as Record<string, string>).NODE_ENV = prev ?? "test";
   });

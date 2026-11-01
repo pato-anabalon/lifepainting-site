@@ -5,7 +5,7 @@
  *  - Every visible string lives here, not inside components.
  *  - Never invent testimonials, reviews, awards, metrics, clients or case studies.
  *  - Anything awaiting real material is `evidence: "pending"`. Pending sections render
- *    in development only (see `isSectionVisible`) and never in production.
+ *    in development only (see `isSectionVisible`), unless SHOW_PENDING_SECTIONS is on.
  */
 
 export type Evidence = "ready" | "pending";
@@ -78,11 +78,19 @@ export const sections: Record<
   },
 };
 
-/** Pending sections only render outside production, so placeholders can never ship. */
+/**
+ * Mock-up mode (owner, 2026-11-01): show pending sections (Proof, Work) in production too, with
+ * their "PENDING" notes, so the client can review the full page. After the client review, either
+ * the client supplies the real material (set those sections to "ready") or this goes back to false.
+ * Must be false, or every section ready, before the site goes live.
+ */
+export const SHOW_PENDING_SECTIONS = true;
+
+/** Pending sections only render outside production (unless in mock-up mode), so placeholders do not ship. */
 export function isSectionVisible(id: SectionId): boolean {
   const s = sections[id];
   if (!s.visible) return false;
-  if (s.evidence === "pending") return process.env.NODE_ENV !== "production";
+  if (s.evidence === "pending") return SHOW_PENDING_SECTIONS || process.env.NODE_ENV !== "production";
   return true;
 }
 

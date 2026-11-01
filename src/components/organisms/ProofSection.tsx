@@ -1,3 +1,4 @@
+import { LifeParallelograms } from "@/components/atoms/LifeParallelograms";
 import { LifeStarburst } from "@/components/atoms/LifeStarburst";
 import { Container } from "@/components/atoms/Container";
 import { ThumbSlot } from "@/components/atoms/ThumbSlot";
@@ -11,8 +12,10 @@ export function ProofSection() {
     <section id={sections.proof.anchor} data-testid="home-proof-section" aria-labelledby="proof-title" className="py-20 sm:py-28 lg:pt-52 lg:pb-36">
       <Container>
         <ScrollReveal className="flex flex-col gap-14 lg:gap-20">
-          <div data-reveal>
+          <div data-reveal className="flex items-center justify-between gap-12">
             <SectionHeading id="proof-title" title={proof.title} intro={proof.intro} />
+            {/* Desktop only, in the free space beside the heading. */}
+            <LifeParallelograms className="hidden w-64 shrink-0 lg:block xl:w-80" />
           </div>
           <ul data-reveal data-testid="home-proof-values" className="grid gap-x-16 gap-y-10 lg:grid-cols-2">
             {proof.values.map((v) => (

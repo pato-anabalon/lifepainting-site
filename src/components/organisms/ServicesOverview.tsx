@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Container } from "@/components/atoms/Container";
 import { LifeServiceArt, type ArtKind } from "@/components/atoms/LifeServiceArt";
+import { LifeRetroStripes } from "@/components/atoms/LifeRetroStripes";
 import { ShapeDivider } from "@/components/atoms/ShapeDivider";
 import { SectionHeading } from "@/components/molecules/SectionHeading";
 import { ScrollReveal } from "@/components/molecules/ScrollReveal";
@@ -44,6 +45,8 @@ export function ServicesOverview() {
   const { title, intro, askLabel, tiles } = servicesOverview;
   return (
     <section id={sections["services-overview"].anchor} data-testid="home-services-overview-section" data-lp-consent-after data-surface="dark" aria-labelledby="overview-title" className="relative bg-azure-deep py-20 text-cream sm:py-28 lg:pt-36 lg:pb-44">
+      {/* Desktop only: retro stripes pour in from the top edge, beside the heading, and lead down to the tiles. */}
+      <LifeRetroStripes className="pointer-events-none absolute top-0 right-[8%] hidden w-52 lg:block xl:right-[12%] xl:w-56" />
       <Container>
         <ScrollReveal>
           <div data-reveal>

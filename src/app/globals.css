@@ -274,6 +274,73 @@ html[data-lp-preloader="pending"] {
   height: var(--lp-divider-h);
 }
 
+/* Marquee sign bulbs (LifeMarqueeArrow): a light chases along the arrow. Still with reduced motion. */
+@keyframes lp-bulb {
+  0%, 100% { opacity: 0.45; }
+  12% { opacity: 1; }
+}
+/* Sparkles (LifeStitchedArrow): a slow twinkle, scaled from their own centre. */
+@keyframes lp-twinkle {
+  0%, 100% { transform: scale(1) rotate(0deg); opacity: 1; }
+  50% { transform: scale(0.6) rotate(20deg); opacity: 0.6; }
+}
+.lp-twinkle {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+/* Atomic shapes (LifeAtomicShapes): panels drift a few px, atoms turn slowly on their centre. */
+@keyframes lp-drift {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(2px, -4px); }
+}
+@keyframes lp-spin {
+  to { transform: rotate(360deg); }
+}
+.lp-spin {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+/* Retro stripes (LifeRetroStripes): painted in once on first view. Drawn by default (no JS). */
+.lp-stripe {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+[data-draw="pending"] .lp-stripe {
+  stroke-dashoffset: 1;
+}
+[data-draw="in"] .lp-stripe {
+  transition: stroke-dashoffset 1.4s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+/* Lightning bolt (LifeLightningBolt): a short jolt every 4.5 s. */
+@keyframes lp-zap {
+  0%, 84%, 100% { transform: rotate(0deg) scale(1); }
+  87% { transform: rotate(-6deg) scale(1.08); }
+  90% { transform: rotate(4deg) scale(1.03); }
+  93% { transform: rotate(-2deg) scale(1.05); }
+}
+.lp-zap {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .lp-zap {
+    animation: lp-zap 4.5s ease-out infinite;
+  }
+  .lp-drift {
+    animation: lp-drift 6s ease-in-out infinite;
+  }
+  .lp-spin {
+    animation: lp-spin 24s linear infinite;
+  }
+  .lp-bulb {
+    animation: lp-bulb 1.8s ease-in-out infinite;
+  }
+  .lp-twinkle {
+    animation: lp-twinkle 2.6s ease-in-out infinite;
+  }
+}
+
 @keyframes lp-marquee {
   to {
     transform: translateX(-100%);

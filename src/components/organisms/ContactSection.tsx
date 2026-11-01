@@ -3,6 +3,7 @@ import { Mail, Phone } from "lucide-react";
 import { Container } from "@/components/atoms/Container";
 import { ShapeDivider } from "@/components/atoms/ShapeDivider";
 import { Button } from "@/components/atoms/Button";
+import { LifeMarqueeArrow } from "@/components/atoms/LifeMarqueeArrow";
 import { ContactForm } from "@/components/organisms/ContactForm";
 import { Marquee } from "@/components/molecules/Marquee";
 import { ScrollReveal } from "@/components/molecules/ScrollReveal";
@@ -42,6 +43,8 @@ export function ContactSection() {
                 {contact.emailLabel}
               </Button>
             </div>
+            {/* Desktop only, where the form sits beside this column: a marquee sign pointing to it. */}
+            <LifeMarqueeArrow className="mt-2 hidden w-36 self-end lg:block xl:w-44" />
           </div>
           <div data-reveal className="lg:col-span-6">
             <Suspense fallback={null}>
