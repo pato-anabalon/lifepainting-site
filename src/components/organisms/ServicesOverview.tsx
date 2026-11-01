@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Container } from "@/components/atoms/Container";
 import { LifeServiceArt, type ArtKind } from "@/components/atoms/LifeServiceArt";
+import { ShapeDivider } from "@/components/atoms/ShapeDivider";
 import { SectionHeading } from "@/components/molecules/SectionHeading";
 import { ScrollReveal } from "@/components/molecules/ScrollReveal";
 import { cn } from "@/lib/cn";
@@ -42,11 +43,11 @@ const ART_BY_TITLE: Record<string, ArtKind> = {
 export function ServicesOverview() {
   const { title, intro, askLabel, tiles } = servicesOverview;
   return (
-    <section id={sections["services-overview"].anchor} data-testid="home-services-overview-section" data-lp-consent-after aria-labelledby="overview-title" className="bg-cream py-20 sm:py-28 lg:py-36">
+    <section id={sections["services-overview"].anchor} data-testid="home-services-overview-section" data-lp-consent-after data-surface="dark" aria-labelledby="overview-title" className="relative bg-azure-deep py-20 text-cream sm:py-28 lg:pt-36 lg:pb-44">
       <Container>
         <ScrollReveal>
           <div data-reveal>
-            <SectionHeading id="overview-title" title={title} intro={intro} />
+            <SectionHeading id="overview-title" surface="dark" title={title} intro={intro} />
           </div>
           <ul data-testid="home-services-bento-grid" className="mt-12 grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-6 lg:mt-16 lg:grid-cols-12 lg:gap-5 lg:[grid-auto-rows:minmax(11rem,auto)]">
             {tiles.map((tile, i) => {
@@ -81,6 +82,15 @@ export function ServicesOverview() {
           </ul>
         </ScrollReveal>
       </Container>
+      {/* → "How we look after your home" (forest): longer, gentler waves rise from the bottom. */}
+      <ShapeDivider
+        shape="waves-layered"
+        position="bottom"
+        stretch={1.6}
+        height="clamp(3.5rem, 9vw, 8rem)"
+        fills={[{ color: "var(--lp-forest)", opacity: 0.25 }, { color: "var(--lp-forest)", opacity: 0.5 }, { color: "var(--lp-forest)" }]}
+        testId="home-services-overview-divider"
+      />
     </section>
   );
 }

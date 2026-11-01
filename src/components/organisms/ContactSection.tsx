@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import { Mail, Phone } from "lucide-react";
 import { Container } from "@/components/atoms/Container";
+import { ShapeDivider } from "@/components/atoms/ShapeDivider";
 import { Button } from "@/components/atoms/Button";
 import { ContactForm } from "@/components/organisms/ContactForm";
 import { Marquee } from "@/components/molecules/Marquee";
@@ -11,7 +12,17 @@ import { contact, sections, site } from "@/lib/content";
 /** Closing CTA: call / email buttons plus the step form. The form needs JS; call and email always work. */
 export function ContactSection() {
   return (
-    <section id={sections.contact.anchor} data-testid="home-contact-section" data-surface="dark" aria-labelledby="contact-title" className="relative overflow-hidden bg-forest pt-20 text-cream sm:pt-28 lg:pt-36">
+    <section id={sections.contact.anchor} data-testid="home-contact-section" data-surface="dark" aria-labelledby="contact-title" className="relative overflow-hidden bg-forest pt-24 text-cream sm:pt-28 lg:pt-48">
+      {/* FAQ (cream) → this section: cream waves hang over the top, mirrored and a little wide.
+          FAQ precedes contact in every environment, so this one is a plain top divider. */}
+      <ShapeDivider
+        shape="waves-layered"
+        flip
+        stretch={1.35}
+        height="clamp(3.5rem, 10vw, 8.75rem)"
+        fills={[{ color: "var(--lp-cream)", opacity: 0.25 }, { color: "var(--lp-cream)", opacity: 0.5 }, { color: "var(--lp-cream)" }]}
+        testId="home-contact-divider"
+      />
       <Container>
         <ScrollReveal className="grid gap-12 pb-16 sm:pb-20 lg:grid-cols-12 lg:gap-16 lg:pb-28">
           <div className="flex flex-col items-start gap-8 lg:col-span-6">

@@ -6,7 +6,7 @@ import { faq, sections } from "@/lib/content";
 
 export function FaqSection() {
   return (
-    <section id={sections.faq.anchor} data-testid="home-faq-section" aria-labelledby="faq-title" className="py-20 sm:py-28 lg:py-36">
+    <section id={sections.faq.anchor} data-testid="home-faq-section" aria-labelledby="faq-title" className="py-20 sm:py-28 lg:pt-52 lg:pb-36">
       <Container>
         <ScrollReveal className="grid gap-10 lg:grid-cols-12 lg:gap-16">
           <div data-reveal className="lg:col-span-5">

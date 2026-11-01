@@ -1,4 +1,5 @@
 import { Container } from "@/components/atoms/Container";
+import { ShapeDivider } from "@/components/atoms/ShapeDivider";
 import { ScrollReveal } from "@/components/molecules/ScrollReveal";
 import { SectionHeading } from "@/components/molecules/SectionHeading";
 import { ServiceCard } from "@/components/molecules/ServiceCard";
@@ -8,7 +9,7 @@ const PANELS = ["sun", "azure", "mustard", "cream"] as const;
 
 export function ServicesSection() {
   return (
-    <section id={sections.services.anchor} data-testid="home-services-section" data-surface="dark" aria-labelledby="services-title" className="bg-forest py-20 text-cream sm:py-28 lg:py-36">
+    <section id={sections.services.anchor} data-testid="home-services-section" data-surface="dark" aria-labelledby="services-title" className="relative z-10 bg-forest py-20 text-cream sm:py-28 lg:py-36">
       <Container>
         <ScrollReveal>
           <div data-reveal>
@@ -23,6 +24,17 @@ export function ServicesSection() {
           ))}
         </div>
       </Container>
+      {/* → the next cream section (Proof in development, FAQ in production): forest waves hang
+          over its top, wide and mirrored. Those sections leave room for it (lg:pt-52). */}
+      <ShapeDivider
+        shape="waves-layered"
+        position="below"
+        flip
+        stretch={2.31}
+        height="clamp(3.5rem, 12vw, 11rem)"
+        fills={[{ color: "var(--lp-forest)", opacity: 0.25 }, { color: "var(--lp-forest)", opacity: 0.5 }, { color: "var(--lp-forest)" }]}
+        testId="home-services-divider"
+      />
     </section>
   );
 }

@@ -10,6 +10,8 @@
   --lp-azure: #5a9cab; /* "Gray Azure" – decorative / large type only on cream */
   --lp-yellow: #fdd01d;
   --lp-mustard: #eaa72f;
+  /* Derived, not in the guidelines: azure darkened 30 % (same hue, no green), so cream text reads on it (5.03:1). */
+  --lp-azure-deep: #3f6d78;
 
   /* Surface roles */
   --lp-bg: var(--lp-cream);
@@ -19,6 +21,8 @@
   --lp-header-h: 4.25rem;
   /* Space the hero leaves for the header; 0 when the header hides over the hero (see .lp-header). */
   --lp-hero-offset: var(--lp-header-h);
+  /* Height of a ShapeDivider (.lp-shape-divider). */
+  --lp-divider-h: clamp(3.5rem, 11vw, 10.3rem);
 }
 
 /* Hard offset shadow for hero type in the page background colour (cream): reads as a cut-out over photos. */
@@ -53,6 +57,7 @@ html[data-lp-preloader]:has([data-lp-header-auto]) .lp-header:not([data-shown]):
   --color-cream: var(--lp-cream);
   --color-forest: var(--lp-forest);
   --color-azure: var(--lp-azure);
+  --color-azure-deep: var(--lp-azure-deep);
   --color-sun: var(--lp-yellow);
   --color-mustard: var(--lp-mustard);
 
@@ -213,6 +218,12 @@ html[data-lp-preloader="pending"] {
   .lp-collage-layer {
     display: none;
   }
+  /* The hero's bottom divider sits just below the first screen: the stage grows by its height and
+     the copy stays centred in the first screen. The brush strokes still run under the wave. */
+  .lp-collage-stage {
+    min-height: calc(100svh - var(--lp-hero-offset) + var(--lp-divider-h));
+    padding-bottom: calc(4rem + var(--lp-divider-h));
+  }
 }
 @media (min-width: 768px) {
   .lp-strokes {
@@ -246,6 +257,21 @@ html[data-lp-preloader="pending"] {
     transform-style: preserve-3d;
     will-change: transform;
   }
+}
+
+/* Shape dividers (ShapeDivider atom): full-bleed SVG edge on a `relative` section. */
+.lp-shape-divider {
+  position: absolute;
+  inset-inline: 0;
+  overflow: hidden;
+  line-height: 0;
+  pointer-events: none;
+}
+.lp-shape-divider svg {
+  display: block;
+  /* +1.3px hides the hairline seam some browsers leave at the right edge. */
+  width: calc(100% + 1.3px);
+  height: var(--lp-divider-h);
 }
 
 @keyframes lp-marquee {

@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { ShapeDivider } from "@/components/atoms/ShapeDivider";
 import { Button } from "@/components/atoms/Button";
 import { LifeHeroCollage } from "@/components/organisms/LifeHeroCollage";
 import { LifeHeroReveal } from "@/components/organisms/LifeHeroReveal";
@@ -84,6 +85,20 @@ export function HeroSection() {
           </LifeHeroReveal>
         </div>
       </LifeHeroCollage>
+      {/* Hero → "What we paint and prepare": the next section's colour rises over the collage /
+          brush strokes, so they end on the wave instead of a straight cut. */}
+      <ShapeDivider
+        shape="waves-layered"
+        position="bottom"
+        fills={[
+          // Lighter azure for the see-through layers: deep azure over cream reads grey.
+          { color: "var(--lp-azure)", opacity: 0.35 },
+          { color: "var(--lp-azure)", opacity: 0.6 },
+          { color: "var(--lp-azure-deep)" },
+        ]}
+        className="z-20"
+        testId="home-hero-divider"
+      />
     </section>
   );
 }

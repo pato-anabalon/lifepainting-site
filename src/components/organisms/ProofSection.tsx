@@ -8,7 +8,7 @@ import { proof, sections } from "@/lib/content";
 /** "How we work": qualitative standards (ready) + testimonial wall (slots until real comments exist). */
 export function ProofSection() {
   return (
-    <section id={sections.proof.anchor} data-testid="home-proof-section" aria-labelledby="proof-title" className="py-20 sm:py-28 lg:py-36">
+    <section id={sections.proof.anchor} data-testid="home-proof-section" aria-labelledby="proof-title" className="py-20 sm:py-28 lg:pt-52 lg:pb-36">
       <Container>
         <ScrollReveal className="flex flex-col gap-14 lg:gap-20">
           <div data-reveal>
