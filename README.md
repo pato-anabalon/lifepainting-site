@@ -45,4 +45,6 @@ Push to GitHub, import the repo in Vercel and set the env vars above. Production
 
 
 ## Status
-Home sections built: hero, services overview, services, FAQ, contact CTA. Proof and gallery built as dev-only placeholders (awaiting real photos and testimonials). Phase 3 built (step form, /api/contact via Resend, /api/upload via Blob, consent + Vercel Analytics, /privacy, /thank-you); needs env vars to go live.
+Before launch, work through the **Go-live checklist** at the top of `Life_Painting_PROJECT_CONTEXT.md`.
+
+Home sections built: hero, services overview, services, FAQ, contact CTA. Proof and gallery built as placeholders awaiting real photos and testimonials; shown in production for now by mock-up mode (`SHOW_PENDING_SECTIONS`). Phase 3 built (step form, /api/contact via Resend, /api/upload via Blob, consent + Vercel Analytics, /privacy, /thank-you); needs env vars to go live.
