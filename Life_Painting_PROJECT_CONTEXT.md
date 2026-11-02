@@ -1,6 +1,35 @@
 # Life Painting – Project Context
 
-_Last updated: Phase 2, block 2 (hero, services overview, services). Design skills Impeccable + Taste in use._
+_Last updated: 2026-11-01 (mock-up live on Vercel; go-live checklist below). Design skills Impeccable + Taste in use._
+
+## Go-live checklist (owner, before pointing lifepaintingdec.co.nz at the site)
+Status 2026-11-01: mock-up live on `https://lifepainting-site.vercel.app` (Vercel production from `main`; changes reach `develop` and `main` through PRs, with signed commits). Tick each item before launch.
+
+**Content and evidence**
+- [ ] Client review of the mock-up done.
+- [ ] Proof ("How we run every job"): real client comments with written permission to publish, then `evidence: "ready"` in `content.ts` — or leave it pending.
+- [ ] Work ("Finishes we're proud of"): real project photos (before/after, details) replacing the `ThumbSlot` placeholders, then `evidence: "ready"` — or leave it pending.
+- [ ] `SHOW_PENDING_SECTIONS` (mock-up mode, `content.ts`) back to `false`, unless both sections are ready. Blocker: otherwise the "PENDING" notes and placeholders ship.
+- [ ] Privacy policy text reviewed.
+
+**Domain and URLs**
+- [ ] Connect `lifepaintingdec.co.nz` in Vercel (Settings → Domains), set it as the primary production domain, then redeploy once: canonical, og:url, og:image, JSON-LD, robots and sitemap switch to it by themselves (`VERCEL_PROJECT_PRODUCTION_URL`, see `SITE_URL` in `seo.ts`). Leave `NEXT_PUBLIC_SITE_URL` unset unless overriding.
+- [ ] Check on the live domain: `/opengraph-image` loads, `<link rel="canonical">` and `og:image` use the domain, `/sitemap.xml` and `/robots.txt` list it.
+- [ ] Re-scrape the home page in the Facebook Sharing Debugger and LinkedIn Post Inspector (they cache old previews).
+- [ ] Search Console: verify the domain and submit the sitemap.
+
+**Indexing while it is a mock-up**
+- [ ] The home page is `index: true` and the vercel.app URL is public: while mock-up mode is on, Google could index the "PENDING" texts. Either keep the mock-up on a protected / preview deployment, or make the site noindex until launch (not done; owner's call).
+
+**Integrations**
+- [ ] Set the env vars in Vercel: `RESEND_API_KEY`, `CONTACT_TO_EMAIL`, `CONTACT_FROM_EMAIL`, `BLOB_READ_WRITE_TOKEN` (without them production answers 503 and the form shows the call / email fallback).
+- [ ] Verify the Resend sender domain.
+- [ ] Send one real enquiry end to end (form → email, photo upload → Blob) and check `/thank-you`.
+
+**Quality**
+- [ ] Real-device pass: iPhone / Safari and a modest Android (preloader brush, mobile hero strokes, full-screen menu, graphic-element animations, clip-path circle).
+- [ ] Reduced-motion and keyboard pass on the live site.
+- [ ] Lovelo title font (licensed, pending): add it, then re-check that every headline still fits in two lines.
 
 ## Business goals
 Homeowner enquiries (quotes) in Auckland, North Shore and Auckland Central. Painting first; decorating secondary.
