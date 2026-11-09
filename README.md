@@ -45,6 +45,6 @@ Push to GitHub, import the repo in Vercel and set the env vars above. Production
 
 
 ## Status
-Before launch, work through the **Go-live checklist** at the top of `Life_Painting_PROJECT_CONTEXT.md`.
+Live on https://lifepaintingdec.co.nz since 2026-11-09. Open items and local-dev notes: **Next iteration** at the top of `Life_Painting_PROJECT_CONTEXT.md`.
 
 Home sections built: hero, services overview, services, work gallery (18 real project photos in `public/gallery/`, 3 per tier with a shuffle button), how we work (5 standards), FAQ, contact CTA. The testimonial block ("Kind words from our clients") is built as a placeholder awaiting real comments and is hidden in production; mock-up mode (`SHOW_PENDING_SECTIONS`) is off. Brand fonts: Lovelo Black for titles (self-hosted, `src/app/fonts/`; licensed originals kept out of the repo in `design-source/fonts/`), Montserrat for everything else. Phase 3 built (step form, /api/contact via Resend, /api/upload via Blob, consent + Vercel Analytics, /privacy, /thank-you); needs env vars to go live.

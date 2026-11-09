@@ -1,8 +1,35 @@
 # Life Painting – Project Context
 
-_Last updated: 2026-11-09 (production release prep: mock-up mode off, testimonials hidden). Design skills Impeccable + Taste in use._
+_Last updated: 2026-11-09 (site launched on lifepaintingdec.co.nz; next-iteration list below). Design skills Impeccable + Taste in use._
 
-## Go-live checklist (owner, before pointing lifepaintingdec.co.nz at the site)
+## Next iteration (start here)
+Site live since 2026-11-09 on `https://lifepaintingdec.co.nz` (launch checklist below, all done). Open items:
+
+**Owner, outside the code**
+- [ ] Google Business Profile: use the same address format as the site (15 Kerr Street, Devonport, Auckland 0624) so the name/address/phone match. If clients are not received there, set it as a service-area business with the address hidden on Google (the site can still show it).
+- [ ] Re-scrape `https://lifepaintingdec.co.nz` in the Facebook Sharing Debugger and LinkedIn Post Inspector (they cache old previews).
+- [ ] Optional: Google Rich Results Test on the home (expects HousePainter with `sameAs` Instagram, and FAQPage).
+- [ ] Google Business Profile (if it exists): set the website URL. Instagram bio: link to the site.
+
+**Content**
+- [ ] Testimonials ("Kind words from our clients", inside Proof): real comments with written permission, then replace the `ThumbSlot`s, remove the PENDING note and set `proof.testimonials.evidence: "ready"` in `content.ts`. Hidden in production until then (shown in `npm run dev`).
+- [ ] More social networks, if the client adds any: one line in `site.social` (`content.ts`) puts it in the footer and the JSON-LD `sameAs`; it needs its own icon (only `InstagramIcon` exists).
+
+**Open decision**
+- [ ] `.env.example`: on 2026-11-09 the owner asked to gitignore it; the `!.env.example` exception was removed from `.gitignore`, but the file is still tracked (README points to it). Either untrack it (`git rm --cached .env.example`, and move the variable list into the README) or restore the `!.env.example` line. Not decided.
+
+**Local development notes**
+- The folder is linked to Vercel `nodo-nz/lifepainting-site` (`.vercel/`, gitignored). `vercel env pull .env.local --environment=preview` brings `BLOB_STORE_ID` and a `VERCEL_OIDC_TOKEN` (valid ~12 h).
+- Local photo uploads fail with 502 `BlobOidcEnvironmentNotAllowedError`: the CLI's token is for "development" and the Blob store is connected to Production and Preview only. Enable Development on the store's project connection to test uploads locally (they land in the same store, `enquiries/`), or test uploads on a preview deployment (works). Without Resend keys locally, the form simulates the send.
+- Vercel CLI is old (59.23 vs 65.x): `npm i -g vercel@latest`.
+- To check production locally: `npm run build && npm run start -- -p 3001` (pending content hidden, form answers "unavailable" without keys).
+- To test the form's click behaviour headlessly, use real mouse events (CDP `Input.dispatchMouseEvent`): `element.click()` missed the step 2 → 3 submit bug.
+
+**Possible tidy-ups (not requested)**
+- FAQ keeps `lg:pt-52` from when it followed the services divider; the gap above its heading is larger than needed.
+- Prettier is not part of `npm run verify`; several files are not Prettier-formatted.
+
+## Launch checklist (done 2026-11-09)
 Status 2026-11-09: **live on `https://lifepaintingdec.co.nz`** (Vercel production from `main`; changes reach `develop` and `main` through PRs, with signed commits). Domains: `lifepaintingdec.co.nz` = Production; `www.` and `lifepainting-site.vercel.app` 308 → `lifepaintingdec.co.nz` (set apex first, then the redirects, to avoid a loop; redeploy without build cache after changing the primary domain, since the canonical origin is fixed at build time). DNS at Porkbun: A → Vercel, `www` CNAME → Vercel, MX → Google Workspace (untouched), Resend records; Porkbun's default wildcard `*` CNAME → `pixie.porkbun.com` (parking) was deleted.
 
 **Content and evidence**
@@ -12,16 +39,13 @@ Status 2026-11-09: **live on `https://lifepaintingdec.co.nz`** (Vercel productio
 - [x] `SHOW_PENDING_SECTIONS` (mock-up mode, `content.ts`) back to `false` (2026-11-09); a test now fails if it is turned on again. Production HTML checked: no "PENDING" text, no testimonial slots.
 - [x] Privacy policy text reviewed (owner, 2026-11-09).
 
+**Social**
+- [x] Social profiles (2026-11-09): only Instagram for now, `https://www.instagram.com/lifepaintingdec` (`site.social` in `content.ts`). Footer "Get in touch" shows `@lifepaintingdec` with an `InstagramIcon` atom (own SVG in lucide's stroke style; lucide 1.x has no brand icons), new tab, sr-only "Instagram:" and "(opens in a new tab)" (`footer.newTab`, now shared with the Nodo credit); testid `site-footer-instagram-link`. Also in the LocalBusiness JSON-LD as `sameAs`. Deploy, then re-scrape.
+
 **Domain and URLs**
 - [x] Connect `lifepaintingdec.co.nz` in Vercel (Settings → Domains), set it as the primary production domain, then redeploy once: canonical, og:url, og:image, JSON-LD, robots and sitemap switch to it by themselves (`VERCEL_PROJECT_PRODUCTION_URL`, see `SITE_URL` in `seo.ts`). Leave `NEXT_PUBLIC_SITE_URL` unset unless overriding (2026-11-09: it was set in Vercel Production to the vercel.app URL, which would have pinned every absolute URL there after the domain switch; the owner removed it, and `.env.example` now has it commented out).
 - [x] Check on the live domain (2026-11-09): `/opengraph-image` loads, canonical / og:url / og:image / twitter:image / JSON-LD use `https://lifepaintingdec.co.nz`, `/sitemap.xml` and `/robots.txt` list it, no `www` or `vercel.app` left in the HTML, `/thank-you` noindex, 404 page served.
 - [x] Search Console: domain verified and sitemap submitted (owner, 2026-11-09).
-
-**After launch (open)**
-- [x] Social profiles (2026-11-09): only Instagram for now, `https://www.instagram.com/lifepaintingdec` (`site.social` in `content.ts`). Footer "Get in touch" shows `@lifepaintingdec` with an `InstagramIcon` atom (own SVG in lucide's stroke style; lucide 1.x has no brand icons), new tab, sr-only "Instagram:" and "(opens in a new tab)" (`footer.newTab`, now shared with the Nodo credit); testid `site-footer-instagram-link`. Also in the LocalBusiness JSON-LD as `sameAs`. Deploy, then re-scrape.
-- [ ] Re-scrape the home in the Facebook Sharing Debugger and LinkedIn Post Inspector (they cache old previews).
-- [ ] Google Business Profile (if it exists): set the website URL.
-- [ ] Testimonials: real comments with written permission, then `proof.testimonials.evidence: "ready"`.
 
 **Indexing while it is a mock-up**
 - [x] The home page is `index: true` and the vercel.app URL is public: while mock-up mode was on, Google could index the "PENDING" texts. Resolved by turning mock-up mode off (2026-11-09).
@@ -103,7 +127,7 @@ Vercel Analytics (with consent) + custom CTA events · `/api/contact` (Resend) �
 `/` index (skeleton) · `/_not-found` noindex. Planned `/thank-you` noindex, `/privacy`.
 
 ## Commercial decisions
-Name shown: **Life Painting**; footer/legal: Life Painting & Decorating. Service area shown generically (Auckland · North Shore · Auckland Central · West Auckland), no street address.
+Name shown: **Life Painting**; footer/legal: Life Painting & Decorating. Service area shown generically (Auckland · North Shore · Auckland Central · West Auckland). Business address (owner, 2026-11-09): 15 Kerr Street, Devonport, Auckland 0624 (`site.address`), shown in the footer (`<address>`, `MapPinHouse` icon, testid `site-footer-address`), on the privacy page under the contact details (testid `privacy-address`) and in the LocalBusiness JSON-LD (`streetAddress` "15 Kerr Street, Devonport", `addressLocality`/`addressRegion` Auckland, `postalCode` 0624).
 Contact: phone 027 375 9093, email `contact@lifepaintingdec.co.nz`. Domain: `lifepaintingdec.co.nz`.
 Git: the owner (Patricio) makes all commits and pushes.
 
@@ -152,7 +176,7 @@ Git: the owner (Patricio) makes all commits and pushes.
 - `HeroSection` (server; was `HeroSection2` while under review) → `LifeHeroCollage` + `LifeHeroReveal`. Inspired by a parallax portfolio template the owner shared (structure only; no code or assets copied, rebuilt with our own loop and brand). The loop's easing helpers live in `src/lib/motion/smooth.ts` (`clamp`, `smoothToward`, tested).
 - `LifeHeroCollage` (client): 12 tiles in a 4-column floating grid (20vw tiles / 10vw gap on desktop, 30vw / 40vw on smaller screens). ONCE intro after the preloader (opacity 0→1, scale 0.8→1, 1.4 s); 3D mouse parallax for fine pointers only (perspective 1200px on the centre; the grid pans ±14vw away from the cursor, no tilt (tried ±7°/±9°, owner preferred it flat); every tile has a signed depth −4…5 that sets its translateZ (45px per unit) and an extra drift of 1.2vw per unit, so near tiles follow the mouse and far ones move against it; τ 520 ms; intro opacity lives on the centre so the grid's preserve-3d is not flattened); SCRUB on scroll over a 170svh track (collage lifts 70 %, grows to 1.2, fades to 25 % but never fully, so what is left scrolls out with the headline and there is no blank screen before the next section; blur ≤ 10 px on desktop only; was 220svh / fully gone at 85 %, which left an empty screen). One rAF loop that stops when everything has caught up (measured: 0 frames while idle). Reduced motion / no JS: static collage, one screen.
 - Headline and intro have no panel or backings (owner's call, 2026-10-31; the earlier cream / yellow per-line backings were removed). A soft glow halo and then a thin cream text edge were tried on the intro and dropped. Line 2 of the H1 ("Better finishes.") is `text-azure` (#5A9CAB, owner's choice; ≈2.7:1 on cream, below the 3:1 large-text minimum, accepted as brand display type). Trade-off: where a dark photo passes behind the H1, contrast drops for a moment. Hero copy carries a hard cream (background-colour) offset shadow, same geometry as the buttons' shadow (mustard was tried first): `.lp-text-offset` (0.05em) on both the H1 and the intro. The secondary button keeps a cream fill.
-- Photos (2026-11-01): 12 pictures supplied by the owner in `public/hero-collage/` (`1-optimized.avif` … `12-optimized.avif`, order = tile order), replacing the earlier Wikimedia Commons set and the 2 hero-sequence stills. The owner later converted all of them to AVIF and swapped photos 2 and 7 (tiles updated to match). Each tile now uses its photo's own aspect ratio (`TILES` in `LifeHeroCollage.tsx`), so nothing is cropped; tile offsets and depths are unchanged. Credits: none recorded (`credit: null`); add one in `content.ts` → `heroCollage` for any photo that needs it. The footer "Photo credits" block only renders when at least one photo has a credit. Licence (owner, 2026-11-01): all 12 are free-licence pictures that need no credit. The shopfront with the "Life Painting Decorating" sign (now photo 7) is an illustration; the business has no physical shop. Kept as decoration by the owner's decision; never caption or alt it as "our shop", and do not add a shop address anywhere.
+- Photos (2026-11-01): 12 pictures supplied by the owner in `public/hero-collage/` (`1-optimized.avif` … `12-optimized.avif`, order = tile order), replacing the earlier Wikimedia Commons set and the 2 hero-sequence stills. The owner later converted all of them to AVIF and swapped photos 2 and 7 (tiles updated to match). Each tile now uses its photo's own aspect ratio (`TILES` in `LifeHeroCollage.tsx`), so nothing is cropped; tile offsets and depths are unchanged. Credits: none recorded (`credit: null`); add one in `content.ts` → `heroCollage` for any photo that needs it. The footer "Photo credits" block only renders when at least one photo has a credit. Licence (owner, 2026-11-01): all 12 are free-licence pictures that need no credit. The shopfront with the "Life Painting Decorating" sign (now photo 7) is an illustration; the business has no physical shop. Kept as decoration by the owner's decision; never caption or alt it as "our shop", and never tie it to the business address (added 2026-11-09; it is the business address, not a shopfront).
 - Testids: `home-hero-collage` (renamed from `home-hero2-collage` on 2026-11-01: the "2" only marked the mock-up), `home-hero-logo`, `site-footer-photo-credits` (only rendered when a photo has a credit; title/CTA testids unchanged).
 - Mobile backdrop (2026-11-01, below 768px): the photo collage was too busy on phones, so it is hidden there (`.lp-collage-layer` display:none; tiles are `loading="lazy"`, so phones never download the photos) and `LifeHeroStrokes` (client, passed to `LifeHeroCollage` as `backdrop`) runs an ambient loop instead: an invisible painter lays a brush stroke every 1.4 s in the free bands above and below the copy (measured at start), in pale brand tints (azure 45 %, yellow 55 %, mustard 45 % into cream). Each stroke is drawn fresh on its own canvas as a dry brush mark (`paintDryStroke`, owner's reference: dry-brush strokes with a dense blunt head that splits into fingers and streaks): bristles grouped in 6–10 clumps, each clump with its own paint load and skip pattern, edge clumps drying first, ~15 % stray bristles running long thin streaks, a few specks off the tail; every stroke is unique. It paints in left to right (0.65 s, power2.out) through a soft moving gradient mask, rests 2.2 s, then dries (fades out, 1.8 s), so about 4–5 are on screen. 70–110 % of the screen wide (box height 0.36 × width), tilted up to ±14°, either direction, kept inside its zone where there is room. (First version masked the preloader's sprite over a tint; dropped because its edges looked square.) Paused while the hero is off screen (IntersectionObserver) or the tab is hidden; stopped above 768px. Reduced motion: three strokes, still (seeded layout). No JS: plain cream. Geometry in `src/lib/motion/paintStrokes.ts` (tested). The hero on mobile is one screen (no sticky scroll lift; that only runs at 768px and up). Testid: `home-hero-strokes`. A one-off roller version (`LifeHeroRoller`) was tried the same day and dropped by the owner. Tablet and desktop are unchanged. Drawn in code: no image asset, so it does not depend on the CodePen sprite.
 - Fix (2026-10-31): on a first visit (preloader running) the hero copy stayed hidden. The preloader dispatches its "done" event from inside its GSAP `onComplete`, so a selector string tweened in that callback was resolved against the preloader's scope and matched nothing. `lifeEntranceOnLoad` (`src/lib/motion/once.ts`) now resolves its targets to elements up front. Rule: anything that waits for the preloader must hold element refs, never selector strings.

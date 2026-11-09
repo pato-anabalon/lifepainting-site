@@ -97,10 +97,17 @@ export function localBusinessJsonLd() {
     email: site.email,
     logo: `${SITE_URL}/logos/logo-for-light.png`,
     image: `${SITE_URL}/opengraph-image`,
-    address: { "@type": "PostalAddress", addressLocality: "Auckland", addressCountry: site.country },
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: `${site.address.street}, ${site.address.suburb}`,
+      addressLocality: site.address.city,
+      addressRegion: site.address.city,
+      postalCode: site.address.postcode,
+      addressCountry: site.country,
+    },
     areaServed: site.serviceAreas.map((name) => ({ "@type": "Place", name })),
     sameAs: site.social.map((s) => s.href),
-    // No streetAddress, ratings or reviews: none are public/verified yet.
+    // No ratings or reviews: none are public/verified yet.
   };
 }
 
