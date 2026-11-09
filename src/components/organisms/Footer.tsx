@@ -90,8 +90,10 @@ export function Footer() {
             {footer.credit.heart}
           </span>{" "}
           {footer.credit.after}{" "}
-          <TextLink href={footer.credit.href} surface="dark" data-testid="site-footer-credit-link">
+          {/* New tab so visitors stay on the Life Painting site. */}
+          <TextLink href={footer.credit.href} surface="dark" target="_blank" rel="noopener" data-testid="site-footer-credit-link">
             {footer.credit.label}
+            <span className="sr-only"> {footer.credit.newTab}</span>
           </TextLink>
         </p>
         <p className="flex gap-5 text-sm">

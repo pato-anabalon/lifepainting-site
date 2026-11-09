@@ -19,7 +19,7 @@ export const site = {
   locale: "en-NZ",
   phone: { display: "027 375 9093", tel: "+64273759093" },
   email: "contact@lifepaintingdec.co.nz",
-  serviceAreas: ["Auckland", "North Shore", "Auckland Central"],
+  serviceAreas: ["Auckland", "North Shore", "Auckland Central", "West Auckland"],
   country: "NZ",
 } as const;
 
@@ -57,17 +57,18 @@ export const sections: Record<
     evidence: "ready",
     visible: true,
   },
-  // Pending: real photos / reviews are still being collected. Thumbs are slots for them.
+  // Standards are ready; only the testimonial block inside it is pending (see `proof.testimonials`).
   proof: {
     anchor: "how-we-work",
     navLabel: "How we work",
-    evidence: "pending",
+    evidence: "ready",
     visible: true,
   },
+  // Real project photos supplied by the owner (2026-11-09).
   work: {
     anchor: "work",
     navLabel: "Our work",
-    evidence: "pending",
+    evidence: "ready",
     visible: true,
   },
   faq: { anchor: "faq", navLabel: "FAQ", evidence: "ready", visible: true },
@@ -80,20 +81,22 @@ export const sections: Record<
 };
 
 /**
- * Mock-up mode (owner, 2026-11-01): show pending sections (Proof, Work) in production too, with
- * their "PENDING" notes, so the client can review the full page. After the client review, either
- * the client supplies the real material (set those sections to "ready") or this goes back to false.
- * Must be false, or every section ready, before the site goes live.
+ * Mock-up mode (owner, 2026-11-01): show pending content in production too, with its "PENDING"
+ * notes, so the client could review the full page. Off since the production release (2026-11-09):
+ * pending content (the testimonial block) renders in development only.
  */
-export const SHOW_PENDING_SECTIONS = true;
+export const SHOW_PENDING_SECTIONS = false;
 
-/** Pending sections only render outside production (unless in mock-up mode), so placeholders do not ship. */
-export function isSectionVisible(id: SectionId): boolean {
-  const s = sections[id];
-  if (!s.visible) return false;
-  if (s.evidence === "pending")
+/** Pending content only renders outside production (unless in mock-up mode), so placeholders do not ship. */
+export function isEvidenceVisible(evidence: Evidence): boolean {
+  if (evidence === "pending")
     return SHOW_PENDING_SECTIONS || process.env.NODE_ENV !== "production";
   return true;
+}
+
+export function isSectionVisible(id: SectionId): boolean {
+  const s = sections[id];
+  return s.visible && isEvidenceVisible(s.evidence);
 }
 
 export const nav = {
@@ -295,7 +298,9 @@ export const proof = {
       body: "Clear communication at every step.",
     },
   ],
+  // Pending: real client comments (with written permission) are still being collected.
   testimonials: {
+    evidence: "pending" as Evidence,
     title: "Kind words from our clients",
     pending:
       "PENDING: real client comments and written permission to publish them.",
@@ -303,33 +308,62 @@ export const proof = {
   },
 };
 
+/** A real project photo (owner's own work, 2026-11-09). Files in `public/gallery/`. */
+export type WorkPhoto = { src: string; alt: string; width: number; height: number };
+
 export const work = {
   title: "Finishes we're proud of",
   intro: "A look at recent projects across Auckland.",
-  pendingNote: "PENDING: real project photos (before/after and detail shots).",
+  /** Photos shown per tier; the shuffle button swaps in the ones not on screen. */
+  shown: 3,
+  shuffle: {
+    label: "Shuffle photos",
+    announce: "Showing other photos from each group.",
+  },
   tiers: [
     {
       key: "interior",
       title: "Interior",
       note: "Walls, ceilings and trim",
       highlight: false,
-      slots: 3,
+      photos: [
+        { src: "/gallery/interior-1.jpg", alt: "Open-plan dining room and kitchen with white walls, a black beam and a timber ceiling", width: 1440, height: 1800 },
+        { src: "/gallery/interior-2.jpg", alt: "Living and dining area with white walls under a timber ceiling and amber pendant lights", width: 1440, height: 1800 },
+        { src: "/gallery/interior-3.jpg", alt: "Long hallway with white walls and white louvred wardrobe doors", width: 1440, height: 1800 },
+        { src: "/gallery/interior-4.jpg", alt: "Front door painted deep green, opening onto a white entry hall", width: 1440, height: 1800 },
+        { src: "/gallery/interior-5.jpg", alt: "Hallway with white walls and doors and timber floors", width: 1192, height: 1192 },
+        { src: "/gallery/interior-6.jpg", alt: "Staircase with white walls and a timber handrail", width: 1440, height: 1440 },
+      ],
     },
     {
       key: "exterior",
       title: "Exterior",
       note: "Weatherboards, masonry, roofs and fences",
       highlight: true,
-      slots: 3,
+      photos: [
+        { src: "/gallery/exterior-1.jpg", alt: "Weatherboard house painted light grey with white bay windows and trim", width: 1440, height: 1800 },
+        { src: "/gallery/exterior-2.jpg", alt: "Brick house with a large timber deck", width: 1440, height: 1800 },
+        { src: "/gallery/exterior-3.jpg", alt: "Front door painted black with a leadlight window, set in white weatherboards", width: 1440, height: 1800 },
+        { src: "/gallery/exterior-4.jpg", alt: "Two-storey building painted white with dark blue window frames", width: 1439, height: 1439 },
+        { src: "/gallery/exterior-5.jpg", alt: "White building with dark blue trim behind a green lawn", width: 1439, height: 1439 },
+        { src: "/gallery/exterior-6.jpg", alt: "Villa porch with pale blue weatherboards, white fretwork and a red front door", width: 1440, height: 1800 },
+      ],
     },
     {
       key: "finishes",
       title: "Finishes",
       note: "Decorative and specialty work",
       highlight: false,
-      slots: 3,
+      photos: [
+        { src: "/gallery/deco-1.jpg", alt: "Kitchen with dark blue tiles, timber cabinets and a timber ceiling", width: 1000, height: 1000 },
+        { src: "/gallery/deco-2.jpg", alt: "Lounge with white walls, a timber sliding barn door and a starburst clock", width: 1439, height: 1439 },
+        { src: "/gallery/deco-3.jpg", alt: "Bedroom with cream walls, a timber ceiling and a black beam", width: 1440, height: 1800 },
+        { src: "/gallery/deco-4.jpg", alt: "Bathroom with a green tiled feature wall and a pink freestanding bath", width: 1440, height: 1800 },
+        { src: "/gallery/deco-5.jpg", alt: "Bathroom with blue-grey walls, a round mirror and a white vanity", width: 1440, height: 1800 },
+        { src: "/gallery/deco-6.jpg", alt: "Timber sliding barn door against white walls", width: 1440, height: 1800 },
+      ],
     },
-  ],
+  ] satisfies { key: string; title: string; note: string; highlight: boolean; photos: WorkPhoto[] }[],
 };
 
 export const faq = {
@@ -337,7 +371,7 @@ export const faq = {
   items: [
     {
       q: "Which areas do you work in?",
-      a: "We work across Auckland, with a focus on the North Shore and Auckland Central.",
+      a: "We work across Auckland, with a focus on the North Shore, Auckland Central and West Auckland.",
     },
     {
       q: "What services do you offer?",
@@ -387,7 +421,7 @@ export const footer = {
   areasLabel: "Areas we work in",
   copyright: `© ${new Date().getFullYear()} Life Painting & Decorating. Auckland, New Zealand.`,
   /** Site credit (owner, 2026-11-01). The heart is read out as "love". */
-  credit: { before: "Built with", heart: "💛", heartLabel: "love", after: "by", label: "Nodo.co.nz", href: "https://nodo.co.nz" },
+  credit: { before: "Built with", heart: "💛", heartLabel: "love", after: "by", label: "Nodo.co.nz", href: "https://nodo.co.nz", newTab: "(opens in a new tab)" },
 };
 
 export const contactForm = {
@@ -411,6 +445,7 @@ export const contactForm = {
       "Auckland",
       "North Shore",
       "Auckland Central",
+      "West Auckland",
       "Somewhere else",
     ],
     areaError: "Choose an area.",
@@ -440,6 +475,7 @@ export const contactForm = {
     consentError: "Please tick this so we can reply.",
     privacyLead: "How we handle your details:",
     privacyLink: "Privacy policy",
+    privacyClose: "Close",
   },
   next: "Continue",
   back: "Back",

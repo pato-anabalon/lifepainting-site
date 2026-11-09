@@ -13,7 +13,7 @@ export const metadata = buildMetadata("home");
 
 /**
  * Phase 2 in progress: sections are built and validated one at a time.
- * Done: hero, services overview, services, FAQ, contact CTA. Proof + work are pending-evidence (dev only). Next: Phase 3 form.
+ * Done: every section. Only the testimonial block inside Proof is pending-evidence (development only).
  */
 export default function HomePage() {
   return (

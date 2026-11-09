@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { ReactNode } from "react";
+import type { AnchorHTMLAttributes, ReactNode } from "react";
 import { cn, type Surface } from "@/lib/cn";
 
 type Props = {
@@ -8,7 +8,7 @@ type Props = {
   className?: string;
   children: ReactNode;
   "data-testid"?: string;
-};
+} & Omit<AnchorHTMLAttributes<HTMLAnchorElement>, "href" | "className" | "children">;
 
 /** TextLink = navigation or reference. Underlined, no box, no shadow. */
 export function TextLink({ href, surface = "light", className, children, ...rest }: Props) {

@@ -69,7 +69,8 @@ export function ServicesOverview() {
                   )}
                 >
                   <LifeServiceArt kind={kind} ink={look.ink} accent={look.accent} className={cn("mb-5 ml-auto shrink-0 transition-transform duration-300 ease-out group-hover:rotate-3", look.art)} />
-                  <h3 className={cn("lp-title relative", look.big ? "text-xl sm:text-2xl lg:text-3xl" : "text-base sm:text-lg")}>
+                  {/* Sized so the longest single word fits its tile in Lovelo: "Weatherboards" on 375px phones, "Decorative" at 1024px. */}
+                  <h3 className={cn("lp-title relative", look.big ? "text-xl sm:text-2xl lg:text-[1.625rem] xl:text-3xl" : "text-sm min-[400px]:text-base sm:text-lg")}>
                     <Link href={contactHref(tile.key)} className="after:absolute after:inset-0">
                       {tile.title}
                       <span className="sr-only">. {askLabel} {tile.title}</span>
