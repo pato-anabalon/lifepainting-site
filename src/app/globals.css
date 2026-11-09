@@ -62,9 +62,8 @@ html[data-lp-preloader]:has([data-lp-header-auto]) .lp-header:not([data-shown]):
   --color-mustard: var(--lp-mustard);
 
   --font-sans: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
-  /* Lovelo is a licensed font and is still pending (see Life_Painting_PROJECT_CONTEXT.md).
-     Until the file is added, brand titles fall back to heavy Montserrat. */
-  --font-title: "Lovelo", var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
+  /* Lovelo Black (licensed, loaded in layout.tsx). Montserrat covers the symbols Lovelo lacks. */
+  --font-title: var(--font-lovelo), var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
 
   /* Hard, sign-painter shadows – the signature depth of the brand */
   --shadow-sign: 4px 4px 0 0 var(--lp-forest);
@@ -358,6 +357,23 @@ html[data-lp-preloader="pending"] {
   }
   .lp-twinkle {
     animation: lp-twinkle 2.6s ease-in-out infinite;
+  }
+}
+
+/* Modal dialogs (privacy policy from the contact form): the page behind does not scroll. */
+html:has(dialog[open]) {
+  overflow: hidden;
+}
+
+/* Work gallery: a photo swapped in by the shuffle button fades in (click feedback, not an entrance). */
+@keyframes lp-photo-in {
+  from {
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .lp-photo-in {
+    animation: lp-photo-in 0.45s ease-out;
   }
 }
 

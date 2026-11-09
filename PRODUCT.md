@@ -10,7 +10,7 @@ web
 Next.js App Router, React, TypeScript strict, Tailwind CSS 4, GSAP, Framer Motion, Vercel + GitHub (confirmed by the owner in the project brief).
 
 ## Users
-Auckland homeowners (North Shore and Auckland Central first) planning a repaint, renovation or new-home finish, who want to deal directly with the person doing the work. They are not painting experts: they need to understand what each service includes and feel safe contacting a painter. Secondary and not promoted: builders who occasionally subcontract.
+Auckland homeowners (North Shore, Auckland Central and West Auckland first) planning a repaint, renovation or new-home finish, who want to deal directly with the person doing the work. They are not painting experts: they need to understand what each service includes and feel safe contacting a painter. Secondary and not promoted: builders who occasionally subcontract.
 
 ## Product Purpose
 Life Painting & Decorating is an Auckland painting company (interior, exterior, decorative finishes, preparation and repairs incl. GIB stopping and skimming). The site exists to turn visits into well-informed quote enquiries. Success = a clear enquiry with service, suburb and scope.
@@ -19,7 +19,7 @@ Life Painting & Decorating is an Auckland painting company (interior, exterior, 
 Premium workmanship, approachable service: careful preparation and attention to detail, direct communication with the owners, and a promise to do what they say. "Premium" refers to finish quality, never luxury pricing. Mid/premium price level. Painting first; decorating secondary.
 
 ## Operating Context
-Founded 2023 by a married couple; owners' earlier industry experience must not be presented as company age. Leads arrive by phone (027 375 9093) and email (contact@lifepaintingdec.co.nz). Service areas: Auckland, North Shore, Auckland Central, shown generically with no street address. Exterior work is "designed for Auckland conditions".
+Founded 2023 by a married couple; owners' earlier industry experience must not be presented as company age. Leads arrive by phone (027 375 9093) and email (contact@lifepaintingdec.co.nz). Service areas: Auckland, North Shore, Auckland Central, West Auckland (added 2026-11-09 after the client review), shown generically with no street address. Exterior work is "designed for Auckland conditions".
 
 ## Capabilities and Constraints
 Services: interior painting, exterior painting (weatherboards, masonry/brickwork, roofs, fences), decorative finishes (textures, feature walls, special finishes), preparation & repairs (GIB stopping, skimming, surface prep, minor repairs). No pricing or plans published. Copy is en-NZ. Domain: lifepaintingdec.co.nz. The owner (Patricio) makes all commits and pushes.
