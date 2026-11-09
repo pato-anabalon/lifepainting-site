@@ -13,7 +13,7 @@ Status 2026-11-01: mock-up live on `https://lifepainting-site.vercel.app` (Verce
 - [x] Privacy policy text reviewed (owner, 2026-11-09).
 
 **Domain and URLs**
-- [ ] Connect `lifepaintingdec.co.nz` in Vercel (Settings → Domains), set it as the primary production domain, then redeploy once: canonical, og:url, og:image, JSON-LD, robots and sitemap switch to it by themselves (`VERCEL_PROJECT_PRODUCTION_URL`, see `SITE_URL` in `seo.ts`). Leave `NEXT_PUBLIC_SITE_URL` unset unless overriding.
+- [ ] Connect `lifepaintingdec.co.nz` in Vercel (Settings → Domains), set it as the primary production domain, then redeploy once: canonical, og:url, og:image, JSON-LD, robots and sitemap switch to it by themselves (`VERCEL_PROJECT_PRODUCTION_URL`, see `SITE_URL` in `seo.ts`). Leave `NEXT_PUBLIC_SITE_URL` unset unless overriding (2026-11-09: it was set in Vercel Production to the vercel.app URL, which would have pinned every absolute URL there after the domain switch; the owner removed it, and `.env.example` now has it commented out).
 - [ ] Check on the live domain: `/opengraph-image` loads, `<link rel="canonical">` and `og:image` use the domain, `/sitemap.xml` and `/robots.txt` list it.
 - [ ] Re-scrape the home page in the Facebook Sharing Debugger and LinkedIn Post Inspector (they cache old previews).
 - [ ] Search Console: verify the domain and submit the sitemap.
@@ -22,7 +22,7 @@ Status 2026-11-01: mock-up live on `https://lifepainting-site.vercel.app` (Verce
 - [x] The home page is `index: true` and the vercel.app URL is public: while mock-up mode was on, Google could index the "PENDING" texts. Resolved by turning mock-up mode off (2026-11-09).
 
 **Integrations**
-- [ ] Set the env vars in Vercel: `RESEND_API_KEY`, `CONTACT_TO_EMAIL`, `CONTACT_FROM_EMAIL`, `BLOB_READ_WRITE_TOKEN` (without them production answers 503 and the form shows the call / email fallback).
+- [ ] Set the env vars in Vercel: `RESEND_API_KEY`, `CONTACT_TO_EMAIL`, `CONTACT_FROM_EMAIL`, and for photos `BLOB_STORE_ID` (created by Vercel when the Blob store is connected; OIDC) or a legacy `BLOB_READ_WRITE_TOKEN` (without them production answers 503 and the form shows the call / email fallback).
 - [ ] Verify the Resend sender domain.
 - [ ] Send one real enquiry end to end (form → email, photo upload → Blob) and check `/thank-you`.
 
@@ -133,6 +133,7 @@ Git: the owner (Patricio) makes all commits and pushes.
 - Form alerts (2026-11-09, owner: errors did not read as warnings, the old bold text with a mustard underline looked like a link): every form message (5 field errors, photo upload error, "couldn't send", "form unavailable") now uses `FormAlert` (in `FormField.tsx`): `TriangleAlert` icon (mustard fill, forest stroke) + bold text in a pale mustard box (`bg-mustard/25`) with a 4px mustard left edge. Owner's pick of three (others: icon only; a red error colour outside the palette). Still `role="alert"` and linked from the field's `aria-describedby`; invalid fields keep the 4px border. Checked at 390 and 1440 on the production build through all three steps and the 503 "unavailable" state.
 - **`POST /api/contact`:** validates again, rate-limits (best effort, per instance), sends text email via Resend (`replyTo` = visitor). Without `RESEND_API_KEY` / `CONTACT_TO_EMAIL` / `CONTACT_FROM_EMAIL`: development → `{ok:true, simulated:true}` (logged redacted); production → 503 `not_configured` and the form shows the call/email fallback. Never a fake success in production.
 - **`POST /api/upload`:** one photo per request, JPG/PNG/WebP, ≤ 4 MB (Vercel body limit 4.5 MB), max 3 per enquiry, to Vercel Blob (`BLOB_READ_WRITE_TOKEN`) with random names and public-but-unguessable URLs (stated in `/privacy`). Same simulation/503 rule. Only `*.blob.vercel-storage.com` URLs are accepted by `/api/contact`.
+- Fix (2026-11-09, found by the owner after creating the Blob store): uploads answered 503 `not_configured`. A newly connected store gets `BLOB_STORE_ID` and authenticates with Vercel OIDC, with no `BLOB_READ_WRITE_TOKEN`; the route only checked the token. It now accepts either (both are supported by `@vercel/blob` 2.8), and logs the error message when `put` fails (`[upload] blob put failed`, in the Vercel function logs). The store must be **public** (the route uploads with `access: "public"` and mails the URL).
 - **Consent + analytics:** `AnalyticsGate` shows a banner until a choice is made; `<Analytics />` mounts only on "granted" (stored in `localStorage` `lp-consent`); footer "Cookie preferences" resets it. `trackEvent` (`cta_click`, `form_start`, `form_step`, `form_submit`) is a no-op without consent; CTA events use each `data-testid` ending in `-button` as id, plus origin route and destination. Custom events may require a Vercel plan that supports them.
 - **Routes:** `/privacy` (index, in sitemap), `/thank-you` (noindex, not in sitemap).
 - **To go live (owner):** set the four env vars in Vercel, verify the Resend sender domain, have the privacy text reviewed, test one real enquiry.

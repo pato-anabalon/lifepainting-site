@@ -34,7 +34,7 @@ Routes: `/`, `/privacy`, `/thank-you` (noindex). Hero = floating photo collage f
 
 ## Environment variables
 See `.env.example`. Nothing is required for Phase 1. Phase 3 needs `RESEND_API_KEY`, `CONTACT_TO_EMAIL`,
-`CONTACT_FROM_EMAIL`, `BLOB_READ_WRITE_TOKEN`. Without them, the contact API runs in an explicit *local simulation*
+`CONTACT_FROM_EMAIL`, and `BLOB_STORE_ID` (set by Vercel when a Blob store is connected; OIDC) or a legacy `BLOB_READ_WRITE_TOKEN`. Without them, the contact API runs in an explicit *local simulation*
 mode and must never report fake success in production.
 
 ## Deploy

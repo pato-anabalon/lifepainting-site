@@ -21,7 +21,9 @@ export async function POST(req: Request) {
   if (!PHOTO_TYPES.includes(file.type)) return json({ ok: false, error: "type" }, 415);
   if (file.size > MAX_PHOTO_BYTES) return json({ ok: false, error: "size" }, 413);
 
-  if (!process.env.BLOB_READ_WRITE_TOKEN) {
+  // Either credential works with @vercel/blob: a store connected today gets BLOB_STORE_ID (OIDC auth on
+  // Vercel), older ones a BLOB_READ_WRITE_TOKEN.
+  if (!process.env.BLOB_STORE_ID && !process.env.BLOB_READ_WRITE_TOKEN) {
     if (isProduction()) return json({ ok: false, error: "not_configured" }, 503);
     // Simulation: no storage, so there is no URL. The form shows the photo as attached locally only.
     return json({ ok: true, simulated: true, url: null });
@@ -30,7 +32,9 @@ export async function POST(req: Request) {
   try {
     const blob = await put(`enquiries/${crypto.randomUUID()}.${EXT[file.type]}`, file, { access: "public", contentType: file.type });
     return json({ ok: true, url: blob.url });
-  } catch {
+  } catch (error) {
+    // Logged (no file contents) so a misconfigured store shows up in the Vercel function logs.
+    console.error("[upload] blob put failed:", error instanceof Error ? error.message : error);
     return json({ ok: false, error: "failed" }, 502);
   }
 }
