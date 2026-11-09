@@ -23,6 +23,8 @@ export const site = {
   // Only Instagram for now (owner, 2026-11-09). Each profile also goes into the JSON-LD `sameAs`.
   social: [{ key: "instagram", label: "Instagram", handle: "@lifepaintingdec", href: "https://www.instagram.com/lifepaintingdec" }],
   country: "NZ",
+  // Business address (owner, 2026-11-09). Footer, privacy page and LocalBusiness JSON-LD.
+  address: { street: "15 Kerr Street", suburb: "Devonport", city: "Auckland", postcode: "0624", display: "15 Kerr Street, Devonport, Auckland 0624" },
 } as const;
 
 /** Sections of the home landing, in page order. `visible` hides a section completely. */
@@ -126,8 +128,8 @@ export const hero = {
 
 /**
  * Hero collage (HeroSection). Ambient pictures of homes, rooms and the trade, supplied by
- * the owner (2026-11-01; free licence, no credit needed). The shopfront picture is an illustration:
- * the business has no physical shop. Add a `credit` to any photo that needs one; the footer lists only those
+ * the owner (2026-11-01; free licence, no credit needed). The shopfront picture is an illustration,
+ * not the business's premises: never caption it as "our shop" or tie it to the address. Add a `credit` to any photo that needs one; the footer lists only those
  * (and hides the credits block when there are none). Order = tile order in LifeHeroCollage.
  */
 /** Shared social image (src/app/opengraph-image.tsx): hero headline plus this line. */
@@ -421,6 +423,7 @@ export const footer = {
     contact: "Get in touch",
   },
   areasLabel: "Areas we work in",
+  addressLabel: "Address",
   copyright: `© ${new Date().getFullYear()} Life Painting & Decorating. Auckland, New Zealand.`,
   /** Site credit (owner, 2026-11-01). The heart is read out as "love". */
   credit: { before: "Built with", heart: "💛", heartLabel: "love", after: "by", label: "Nodo.co.nz", href: "https://nodo.co.nz" },

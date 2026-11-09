@@ -21,6 +21,9 @@ export function PrivacyBody({ headingAs }: { headingAs: "h2" | "h3" }) {
       <p className="mt-12 text-lg">
         <TextLink href={`mailto:${site.email}`}>{site.email}</TextLink> · <TextLink href={`tel:${site.phone.tel}`}>{site.phone.display}</TextLink>
       </p>
+      <address className="mt-3 text-lg not-italic" data-testid="privacy-address">
+        {site.legalName}, {site.address.display}
+      </address>
     </>
   );
 }
