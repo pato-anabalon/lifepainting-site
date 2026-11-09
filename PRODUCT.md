@@ -19,7 +19,7 @@ Life Painting & Decorating is an Auckland painting company (interior, exterior, 
 Premium workmanship, approachable service: careful preparation and attention to detail, direct communication with the owners, and a promise to do what they say. "Premium" refers to finish quality, never luxury pricing. Mid/premium price level. Painting first; decorating secondary.
 
 ## Operating Context
-Founded 2023 by a married couple; owners' earlier industry experience must not be presented as company age. Leads arrive by phone (027 375 9093) and email (contact@lifepaintingdec.co.nz). Service areas: Auckland, North Shore, Auckland Central, West Auckland (added 2026-11-09 after the client review), shown generically with no street address. Exterior work is "designed for Auckland conditions".
+Founded 2023 by a married couple; owners' earlier industry experience must not be presented as company age. Leads arrive by phone (027 375 9093) and email (contact@lifepaintingdec.co.nz). Service areas: Auckland, North Shore, Auckland Central, West Auckland (added 2026-11-09 after the client review), shown generically. Business address (owner, 2026-11-09): 15 Kerr Street, Devonport, Auckland 0624, in the footer, privacy page and LocalBusiness JSON-LD. Exterior work is "designed for Auckland conditions".
 
 ## Capabilities and Constraints
 Services: interior painting, exterior painting (weatherboards, masonry/brickwork, roofs, fences), decorative finishes (textures, feature walls, special finishes), preparation & repairs (GIB stopping, skimming, surface prep, minor repairs). No pricing or plans published. Copy is en-NZ. Domain: lifepaintingdec.co.nz. The owner (Patricio) makes all commits and pushes.

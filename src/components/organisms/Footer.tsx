@@ -1,4 +1,4 @@
-import { Mail, MapPin, Phone } from "lucide-react";
+import { Mail, MapPin, MapPinHouse, Phone } from "lucide-react";
 import { Container } from "@/components/atoms/Container";
 import { ConsentPreferencesButton } from "@/components/atoms/ConsentPreferencesButton";
 import { InstagramIcon } from "@/components/atoms/InstagramIcon";
@@ -60,6 +60,13 @@ export function Footer() {
                 </TextLink>
               </li>
             ))}
+            <li className="flex items-start gap-2" data-testid="site-footer-address">
+              <MapPinHouse aria-hidden className="mt-0.5 size-4 shrink-0 text-sun" />
+              <address className="not-italic">
+                <span className="sr-only">{footer.addressLabel}: </span>
+                {site.address.display}
+              </address>
+            </li>
             <li className="flex items-start gap-2">
               <MapPin aria-hidden className="mt-0.5 size-4 shrink-0 text-sun" />
               <span>

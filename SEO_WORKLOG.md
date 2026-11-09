@@ -75,3 +75,7 @@ Google Business Profile (service-area business, no street address shown) · coll
 - Lovelo title font added via `next/font/local` (self-hosted woff2, 11.5 KB, preloaded, `display: swap`): no third-party font request; headline sizes and line counts re-checked, no layout change beyond two bento tile title sizes.
 - Privacy policy in a dialog from the contact form (2026-11-09): the dialog only exists once a visitor reaches step 3 of the form (client-side), so the home HTML is unchanged; inside it the policy uses H2 + H3, never a second H1. `/privacy` is unchanged and remains the canonical page (indexed, in the sitemap); the form's link still points to it.
 - Instagram profile (2026-11-09): `sameAs: ["https://www.instagram.com/lifepaintingdec"]` in the LocalBusiness JSON-LD, plus a footer link (new tab). Helps Google tie the profile to the business; check with the Rich Results Test after deploy.
+
+## Business address (2026-11-09)
+- Owner supplied the address: 15 Kerr Street, Devonport, Auckland 0624. Now in the LocalBusiness JSON-LD (`PostalAddress` with `streetAddress`, `addressLocality`, `addressRegion`, `postalCode`, `addressCountry`), the footer and the privacy page. Replaces the earlier "no street address" rule (lines above are history).
+- Keep NAP consistent: Google Business Profile, Instagram and any directory listings should use the same name, address and phone.
