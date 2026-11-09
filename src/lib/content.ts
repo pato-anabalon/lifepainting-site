@@ -20,6 +20,8 @@ export const site = {
   phone: { display: "027 375 9093", tel: "+64273759093" },
   email: "contact@lifepaintingdec.co.nz",
   serviceAreas: ["Auckland", "North Shore", "Auckland Central", "West Auckland"],
+  // Only Instagram for now (owner, 2026-11-09). Each profile also goes into the JSON-LD `sameAs`.
+  social: [{ key: "instagram", label: "Instagram", handle: "@lifepaintingdec", href: "https://www.instagram.com/lifepaintingdec" }],
   country: "NZ",
 } as const;
 
@@ -421,7 +423,9 @@ export const footer = {
   areasLabel: "Areas we work in",
   copyright: `© ${new Date().getFullYear()} Life Painting & Decorating. Auckland, New Zealand.`,
   /** Site credit (owner, 2026-11-01). The heart is read out as "love". */
-  credit: { before: "Built with", heart: "💛", heartLabel: "love", after: "by", label: "Nodo.co.nz", href: "https://nodo.co.nz", newTab: "(opens in a new tab)" },
+  credit: { before: "Built with", heart: "💛", heartLabel: "love", after: "by", label: "Nodo.co.nz", href: "https://nodo.co.nz" },
+  /** Read out after links that open in a new tab (credit, social profiles). */
+  newTab: "(opens in a new tab)",
 };
 
 export const contactForm = {

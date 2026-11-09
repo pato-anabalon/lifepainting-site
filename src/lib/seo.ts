@@ -99,6 +99,7 @@ export function localBusinessJsonLd() {
     image: `${SITE_URL}/opengraph-image`,
     address: { "@type": "PostalAddress", addressLocality: "Auckland", addressCountry: site.country },
     areaServed: site.serviceAreas.map((name) => ({ "@type": "Place", name })),
+    sameAs: site.social.map((s) => s.href),
     // No streetAddress, ratings or reviews: none are public/verified yet.
   };
 }

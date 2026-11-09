@@ -1,6 +1,7 @@
 import { Mail, MapPin, Phone } from "lucide-react";
 import { Container } from "@/components/atoms/Container";
 import { ConsentPreferencesButton } from "@/components/atoms/ConsentPreferencesButton";
+import { InstagramIcon } from "@/components/atoms/InstagramIcon";
 import { Logo } from "@/components/atoms/Logo";
 import { TextLink } from "@/components/atoms/TextLink";
 import { footer, heroCollage, nav, services, site } from "@/lib/content";
@@ -48,6 +49,17 @@ export function Footer() {
               <Mail aria-hidden className="size-4 shrink-0 text-sun" />
               <TextLink href={`mailto:${site.email}`} surface="dark">{site.email}</TextLink>
             </li>
+            {/* Instagram is the only profile today; give each new network its own icon when one is added. */}
+            {site.social.map((s) => (
+              <li key={s.key} className="flex items-center gap-2">
+                <InstagramIcon className="size-4 shrink-0 text-sun" />
+                <TextLink href={s.href} surface="dark" target="_blank" rel="noopener" data-testid={`site-footer-${s.key}-link`}>
+                  <span className="sr-only">{s.label}: </span>
+                  {s.handle}
+                  <span className="sr-only"> {footer.newTab}</span>
+                </TextLink>
+              </li>
+            ))}
             <li className="flex items-start gap-2">
               <MapPin aria-hidden className="mt-0.5 size-4 shrink-0 text-sun" />
               <span>
@@ -93,7 +105,7 @@ export function Footer() {
           {/* New tab so visitors stay on the Life Painting site. */}
           <TextLink href={footer.credit.href} surface="dark" target="_blank" rel="noopener" data-testid="site-footer-credit-link">
             {footer.credit.label}
-            <span className="sr-only"> {footer.credit.newTab}</span>
+            <span className="sr-only"> {footer.newTab}</span>
           </TextLink>
         </p>
         <p className="flex gap-5 text-sm">
