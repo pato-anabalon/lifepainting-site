@@ -3,7 +3,7 @@
 _Last updated: 2026-11-09 (production release prep: mock-up mode off, testimonials hidden). Design skills Impeccable + Taste in use._
 
 ## Go-live checklist (owner, before pointing lifepaintingdec.co.nz at the site)
-Status 2026-11-01: mock-up live on `https://lifepainting-site.vercel.app` (Vercel production from `main`; changes reach `develop` and `main` through PRs, with signed commits). Tick each item before launch.
+Status 2026-11-09: **live on `https://lifepaintingdec.co.nz`** (Vercel production from `main`; changes reach `develop` and `main` through PRs, with signed commits). Domains: `lifepaintingdec.co.nz` = Production; `www.` and `lifepainting-site.vercel.app` 308 → `lifepaintingdec.co.nz` (set apex first, then the redirects, to avoid a loop; redeploy without build cache after changing the primary domain, since the canonical origin is fixed at build time). DNS at Porkbun: A → Vercel, `www` CNAME → Vercel, MX → Google Workspace (untouched), Resend records; Porkbun's default wildcard `*` CNAME → `pixie.porkbun.com` (parking) was deleted.
 
 **Content and evidence**
 - [x] Client review of the mock-up done (2026-11-09). One change: West Auckland added to the service areas (footer, LocalBusiness `areaServed`, FAQ answer, form area options and API validation; a test keeps the form and API lists in step).
@@ -13,22 +13,27 @@ Status 2026-11-01: mock-up live on `https://lifepainting-site.vercel.app` (Verce
 - [x] Privacy policy text reviewed (owner, 2026-11-09).
 
 **Domain and URLs**
-- [ ] Connect `lifepaintingdec.co.nz` in Vercel (Settings → Domains), set it as the primary production domain, then redeploy once: canonical, og:url, og:image, JSON-LD, robots and sitemap switch to it by themselves (`VERCEL_PROJECT_PRODUCTION_URL`, see `SITE_URL` in `seo.ts`). Leave `NEXT_PUBLIC_SITE_URL` unset unless overriding (2026-11-09: it was set in Vercel Production to the vercel.app URL, which would have pinned every absolute URL there after the domain switch; the owner removed it, and `.env.example` now has it commented out).
-- [ ] Check on the live domain: `/opengraph-image` loads, `<link rel="canonical">` and `og:image` use the domain, `/sitemap.xml` and `/robots.txt` list it.
-- [ ] Re-scrape the home page in the Facebook Sharing Debugger and LinkedIn Post Inspector (they cache old previews).
-- [ ] Search Console: verify the domain and submit the sitemap.
+- [x] Connect `lifepaintingdec.co.nz` in Vercel (Settings → Domains), set it as the primary production domain, then redeploy once: canonical, og:url, og:image, JSON-LD, robots and sitemap switch to it by themselves (`VERCEL_PROJECT_PRODUCTION_URL`, see `SITE_URL` in `seo.ts`). Leave `NEXT_PUBLIC_SITE_URL` unset unless overriding (2026-11-09: it was set in Vercel Production to the vercel.app URL, which would have pinned every absolute URL there after the domain switch; the owner removed it, and `.env.example` now has it commented out).
+- [x] Check on the live domain (2026-11-09): `/opengraph-image` loads, canonical / og:url / og:image / twitter:image / JSON-LD use `https://lifepaintingdec.co.nz`, `/sitemap.xml` and `/robots.txt` list it, no `www` or `vercel.app` left in the HTML, `/thank-you` noindex, 404 page served.
+- [x] Search Console: domain verified and sitemap submitted (owner, 2026-11-09).
+
+**After launch (open)**
+- [x] Social profiles (2026-11-09): only Instagram for now, `https://www.instagram.com/lifepaintingdec` (`site.social` in `content.ts`). Footer "Get in touch" shows `@lifepaintingdec` with an `InstagramIcon` atom (own SVG in lucide's stroke style; lucide 1.x has no brand icons), new tab, sr-only "Instagram:" and "(opens in a new tab)" (`footer.newTab`, now shared with the Nodo credit); testid `site-footer-instagram-link`. Also in the LocalBusiness JSON-LD as `sameAs`. Deploy, then re-scrape.
+- [ ] Re-scrape the home in the Facebook Sharing Debugger and LinkedIn Post Inspector (they cache old previews).
+- [ ] Google Business Profile (if it exists): set the website URL.
+- [ ] Testimonials: real comments with written permission, then `proof.testimonials.evidence: "ready"`.
 
 **Indexing while it is a mock-up**
 - [x] The home page is `index: true` and the vercel.app URL is public: while mock-up mode was on, Google could index the "PENDING" texts. Resolved by turning mock-up mode off (2026-11-09).
 
 **Integrations**
-- [ ] Set the env vars in Vercel: `RESEND_API_KEY`, `CONTACT_TO_EMAIL`, `CONTACT_FROM_EMAIL`, and for photos `BLOB_STORE_ID` (created by Vercel when the Blob store is connected; OIDC) or a legacy `BLOB_READ_WRITE_TOKEN` (without them production answers 503 and the form shows the call / email fallback).
-- [ ] Verify the Resend sender domain.
-- [ ] Send one real enquiry end to end (form → email, photo upload → Blob) and check `/thank-you`.
+- [x] Set the env vars in Vercel: `RESEND_API_KEY`, `CONTACT_TO_EMAIL`, `CONTACT_FROM_EMAIL`, and for photos `BLOB_STORE_ID` (created by Vercel when the Blob store is connected; OIDC) or a legacy `BLOB_READ_WRITE_TOKEN` (without them production answers 503 and the form shows the call / email fallback).
+- [x] Verify the Resend sender domain.
+- [x] Real enquiry sent end to end on the live domain (owner, 2026-11-09): 3 steps with a photo, `/thank-you`, email received at contact@ (from hello@ via Resend), reply-to = visitor, photo link opens. Analytics consent checked (visits show in Vercel Analytics; "Cookie preferences" resets the choice).
 
 **Quality**
 - [x] Real-device pass (owner, 2026-11-09): iPhone / Safari and a modest Android (preloader brush, mobile hero strokes, full-screen menu, graphic-element animations, clip-path circle).
-- [ ] Reduced-motion and keyboard pass on the live site.
+- [x] Reduced-motion and keyboard pass on the live site (owner, 2026-11-09).
 - [x] Lovelo title font added (2026-11-09) and every headline re-checked (see Visual system).
 
 ## Business goals
@@ -59,7 +64,7 @@ Single landing (`/`) with anchored sections. Pending sections render in developm
 | 9 | Footer | n/a | ready | yes |
 
 ## Components (updated 2026-11-01, matches `src/components/`)
-atoms: Button (primary/secondary × light/dark), TextLink, ConsentPreferencesButton, Container, Logo (stacked/wide/icon × light/dark), JsonLd, LifeAtomicShapes, LifeLightningBolt, LifeMarqueeArrow, LifeParallelograms, LifeRetroStripes (+ LifeRetroRibbon), LifeServiceArt, LifeStitchedArrow, LifeStarburst, ShapeDivider, ThumbSlot ·
+atoms: Button (primary/secondary × light/dark), TextLink, InstagramIcon, ConsentPreferencesButton, Container, Logo (stacked/wide/icon × light/dark), JsonLd, LifeAtomicShapes, LifeLightningBolt, LifeMarqueeArrow, LifeParallelograms, LifeRetroStripes (+ LifeRetroRibbon), LifeServiceArt, LifeStitchedArrow, LifeStarburst, ShapeDivider, ThumbSlot ·
 molecules: SectionHeading, ScrollReveal (ONCE on scroll), ServiceCard, FaqItem, FormField (+ FormAlert), PrivacyBody, PrivacyDialog (client), Marquee ·
 organisms: Header (client, mobile menu, forest surface), Footer, HeroSection + LifeHeroCollage + LifeHeroReveal, LifePaintingPreloader, ServicesOverview, ServicesSection, ProofSection, WorkSection + WorkGallery (client, shuffle), FaqSection, ContactSection + ContactForm, AnalyticsGate ·
 templates: SiteShell.
