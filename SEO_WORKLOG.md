@@ -61,3 +61,16 @@ Google Business Profile (service-area business, no street address shown) · coll
 ## Site URL on Vercel (2026-11-01)
 - The first Vercel deployment (no custom domain yet, `lifepainting-site.vercel.app`) failed the og:image check: every absolute URL pointed at lifepaintingdec.co.nz, which does not resolve yet. `SITE_URL` (seo.ts) now resolves `NEXT_PUBLIC_SITE_URL` → `https://${VERCEL_PROJECT_PRODUCTION_URL}` (Vercel's production domain, set on every build) → `https://lifepaintingdec.co.nz`. Canonical, og:url, og:image, JSON-LD, robots and sitemap follow the live domain; once lifepaintingdec.co.nz is connected in Vercel, one redeploy switches them with no code change. Preview deployments also use the production domain (canonical to production, as intended).
 - Home description shortened from 184 to 142 characters (owner's pick): "Interior, exterior and decorative painting for Auckland homes, with careful preparation and GIB stopping. Get a free quote from Life Painting." The service areas (North Shore, Auckland Central) stay in the page copy and the LocalBusiness JSON-LD.
+
+## Work gallery with real photos (2026-11-09)
+- "Finishes we're proud of" (`#work`) is now `evidence: "ready"` and renders in production; the "Our work" nav item shows in production.
+- 18 owner-supplied project photos via `next/image` (lazy, responsive `sizes`), each with a descriptive alt in `content.ts`. 9 are in the server HTML (3 per tier); the other 9 only appear after the client-side shuffle button, so crawlers see the first set. No captions or claims beyond what the photos show; no structured data added for them.
+- Still one H1 (hero); tier titles are H3 under the section H2.
+
+## Production release prep (2026-11-09)
+- Mock-up mode off (`SHOW_PENDING_SECTIONS = false`): no "PENDING" text or placeholder slots in the production HTML (checked in the build output and on `next start`).
+- "How we run every job" (`#how-we-work`) now ships in production with its 5 qualitative standards; the "How we work" nav item shows. The "Kind words from our clients" block stays hidden until real, permitted comments exist. No review or rating markup.
+- Production home sections: hero, services overview, our approach, how we work, our work, FAQ, contact. Still one H1.
+- Service areas (client review): West Auckland added. Shows in the footer, the FAQ answer (so FAQPage JSON-LD too) and LocalBusiness `areaServed`. Title and meta description unchanged (they say "Auckland").
+- Lovelo title font added via `next/font/local` (self-hosted woff2, 11.5 KB, preloaded, `display: swap`): no third-party font request; headline sizes and line counts re-checked, no layout change beyond two bento tile title sizes.
+- Privacy policy in a dialog from the contact form (2026-11-09): the dialog only exists once a visitor reaches step 3 of the form (client-side), so the home HTML is unchanged; inside it the policy uses H2 + H3, never a second H1. `/privacy` is unchanged and remains the canonical page (indexed, in the sitemap); the form's link still points to it.

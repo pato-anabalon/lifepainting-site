@@ -4,7 +4,7 @@ import type { ServiceKey } from "@/lib/content";
 export type ContactService = ServiceKey | "unsure";
 
 export const SERVICE_VALUES: ContactService[] = ["interior", "exterior", "decorative", "preparation", "unsure"];
-export const AREA_VALUES = ["Auckland", "North Shore", "Auckland Central", "Somewhere else"];
+export const AREA_VALUES = ["Auckland", "North Shore", "Auckland Central", "West Auckland", "Somewhere else"];
 export const MAX_PHOTOS = 3;
 export const MAX_PHOTO_BYTES = 4 * 1024 * 1024;
 export const PHOTO_TYPES = ["image/jpeg", "image/png", "image/webp"];

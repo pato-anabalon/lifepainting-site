@@ -5,7 +5,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { ImagePlus, X } from "lucide-react";
 import { Button } from "@/components/atoms/Button";
 import { TextLink } from "@/components/atoms/TextLink";
-import { FormField, fieldClasses } from "@/components/molecules/FormField";
+import { FormAlert, FormField, fieldClasses } from "@/components/molecules/FormField";
+import { PrivacyDialog } from "@/components/molecules/PrivacyDialog";
 import { trackEvent } from "@/lib/analytics/track";
 import { emptyContact, MAX_PHOTOS, MAX_PHOTO_BYTES, PHOTO_TYPES, SERVICE_VALUES, validateStep, type ContactData, type ContactErrors, type ContactService } from "@/lib/contact-schema";
 import { contactForm as t, site } from "@/lib/content";
@@ -101,6 +102,8 @@ export function ContactForm() {
 
   async function submit(ev: React.FormEvent) {
     ev.preventDefault();
+    // A submit before step 3 (e.g. Enter in a field) means "continue", never "validate the last step".
+    if (step < 3) return goNext();
     const e = validateStep(3, data);
     setErrors(e);
     if (Object.keys(e).length || status === "sending") return;
@@ -152,16 +155,16 @@ export function ContactForm() {
             <legend className="sr-only">{t.service.legend}</legend>
             <div className="grid gap-3 sm:grid-cols-2">
               {t.service.options.map((o) => (
-                <label key={o.value} className={cn("flex min-h-14 cursor-pointer items-center gap-3 border-2 border-forest px-4 py-3 text-base font-bold has-[:checked]:bg-sun has-[:focus-visible]:outline has-[:focus-visible]:outline-[3px] has-[:focus-visible]:outline-offset-2")}>
+                <label key={o.value} className={cn("flex min-h-14 cursor-pointer items-center gap-3 border-2 border-forest px-4 py-3 text-sm font-bold has-[:checked]:bg-sun has-[:focus-visible]:outline has-[:focus-visible]:outline-[3px] has-[:focus-visible]:outline-offset-2")}>
                   <input type="radio" name="service" value={o.value} checked={data.service === o.value} onChange={() => set("service", o.value as ContactService)} className="size-5 accent-forest" />
                   {o.label}
                 </label>
               ))}
             </div>
             {errors.service && (
-              <p id="service-error" role="alert" className="mt-3 text-sm font-bold underline decoration-mustard decoration-2 underline-offset-4">
+              <FormAlert id="service-error" className="mt-3">
                 {t.service.error}
-              </p>
+              </FormAlert>
             )}
           </fieldset>
         )}
@@ -204,9 +207,7 @@ export function ContactForm() {
                 </label>
               )}
               {photoError && (
-                <p role="alert" className="mt-2 text-sm font-bold underline decoration-mustard decoration-2 underline-offset-4">
-                  {photoError}
-                </p>
+                <FormAlert className="mt-2">{photoError}</FormAlert>
               )}
             </div>
           </div>
@@ -229,12 +230,12 @@ export function ContactForm() {
                 <span>{t.details.consentLabel}</span>
               </label>
               {errors.consent && (
-                <p id="cf-consent-error" role="alert" className="mt-2 text-sm font-bold underline decoration-mustard decoration-2 underline-offset-4">
+                <FormAlert id="cf-consent-error" className="mt-2">
                   {t.details.consentError}
-                </p>
+                </FormAlert>
               )}
               <p className="mt-3 text-sm">
-                {t.details.privacyLead} <TextLink href="/privacy">{t.details.privacyLink}</TextLink>
+                {t.details.privacyLead} <PrivacyDialog label={t.details.privacyLink} closeLabel={t.details.privacyClose} />
               </p>
             </div>
           </div>
@@ -242,14 +243,14 @@ export function ContactForm() {
       </div>
 
       {status === "error" && (
-        <p role="alert" data-testid="home-contact-form-error" className="mt-6 text-base font-bold">
+        <FormAlert data-testid="home-contact-form-error" className="mt-6 text-base">
           {t.genericError}
-        </p>
+        </FormAlert>
       )}
       {status === "unavailable" && (
-        <p role="alert" data-testid="home-contact-form-unavailable" className="mt-6 text-base font-bold">
+        <FormAlert data-testid="home-contact-form-unavailable" className="mt-6 text-base">
           {t.unavailable} <TextLink href={`tel:${site.phone.tel}`}>{site.phone.display}</TextLink> · <TextLink href={`mailto:${site.email}`}>{site.email}</TextLink>
-        </p>
+        </FormAlert>
       )}
 
       <div className="mt-8 flex flex-wrap items-center gap-4">
@@ -258,12 +259,14 @@ export function ContactForm() {
             {t.back}
           </Button>
         )}
+        {/* Separate keys: without them React reuses the Continue <button> as the submit one, and the
+            browser then submits the form from the same click, showing every step-3 error at once. */}
         {step < 3 ? (
-          <Button onClick={goNext} data-testid="home-contact-next-button">
+          <Button key="next" onClick={goNext} data-testid="home-contact-next-button">
             {t.next}
           </Button>
         ) : (
-          <Button type="submit" disabled={status === "sending"} data-testid="home-contact-submit-button">
+          <Button key="submit" type="submit" disabled={status === "sending"} data-testid="home-contact-submit-button">
             {status === "sending" ? t.sending : t.submit}
           </Button>
         )}

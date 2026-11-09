@@ -1,3 +1,4 @@
+import { TriangleAlert } from "lucide-react";
 import type { ReactNode } from "react";
 import { cn } from "@/lib/cn";
 
@@ -16,12 +17,21 @@ export function FormField({ id, label, hint, error, children, className }: Props
         </p>
       )}
       {children}
-      {error && (
-        <p id={`${id}-error`} role="alert" className="text-sm font-bold text-forest underline decoration-mustard decoration-2 underline-offset-4">
-          {error}
-        </p>
-      )}
+      {error && <FormAlert id={`${id}-error`}>{error}</FormAlert>}
     </div>
+  );
+}
+
+/**
+ * Error / warning message in the form: alert icon + text in a pale mustard box with a mustard
+ * edge (owner's pick, 2026-11-09), so it reads as a warning and never as a link.
+ */
+export function FormAlert({ id, children, className, "data-testid": testId }: { id?: string; children: ReactNode; className?: string; "data-testid"?: string }) {
+  return (
+    <p id={id} role="alert" data-testid={testId} className={cn("flex items-start gap-2.5 border-l-4 border-mustard bg-mustard/25 px-3 py-2.5 text-sm font-bold text-forest", className)}>
+      <TriangleAlert aria-hidden fill="var(--lp-mustard)" className="size-5 shrink-0" />
+      <span>{children}</span>
+    </p>
   );
 }
 

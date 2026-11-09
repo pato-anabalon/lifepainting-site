@@ -34,7 +34,7 @@ Routes: `/`, `/privacy`, `/thank-you` (noindex). Hero = floating photo collage f
 
 ## Environment variables
 See `.env.example`. Nothing is required for Phase 1. Phase 3 needs `RESEND_API_KEY`, `CONTACT_TO_EMAIL`,
-`CONTACT_FROM_EMAIL`, `BLOB_READ_WRITE_TOKEN`. Without them, the contact API runs in an explicit *local simulation*
+`CONTACT_FROM_EMAIL`, and `BLOB_STORE_ID` (set by Vercel when a Blob store is connected; OIDC) or a legacy `BLOB_READ_WRITE_TOKEN`. Without them, the contact API runs in an explicit *local simulation*
 mode and must never report fake success in production.
 
 ## Deploy
@@ -45,4 +45,6 @@ Push to GitHub, import the repo in Vercel and set the env vars above. Production
 
 
 ## Status
-Home sections built: hero, services overview, services, FAQ, contact CTA. Proof and gallery built as dev-only placeholders (awaiting real photos and testimonials). Phase 3 built (step form, /api/contact via Resend, /api/upload via Blob, consent + Vercel Analytics, /privacy, /thank-you); needs env vars to go live.
+Before launch, work through the **Go-live checklist** at the top of `Life_Painting_PROJECT_CONTEXT.md`.
+
+Home sections built: hero, services overview, services, work gallery (18 real project photos in `public/gallery/`, 3 per tier with a shuffle button), how we work (5 standards), FAQ, contact CTA. The testimonial block ("Kind words from our clients") is built as a placeholder awaiting real comments and is hidden in production; mock-up mode (`SHOW_PENDING_SECTIONS`) is off. Brand fonts: Lovelo Black for titles (self-hosted, `src/app/fonts/`; licensed originals kept out of the repo in `design-source/fonts/`), Montserrat for everything else. Phase 3 built (step form, /api/contact via Resend, /api/upload via Blob, consent + Vercel Analytics, /privacy, /thank-you); needs env vars to go live.

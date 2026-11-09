@@ -18,7 +18,7 @@ Impeccable (`PRODUCT.md` is the product record) and Taste are used here, hybrid 
 `npm run verify` (lint, typecheck, test, build). Also check 375/768/1024/1440 px, keyboard, reduced motion, no horizontal overflow.
 
 ## Business rules & content limits
-Painting first, decorating second. Residential homeowners in Auckland / North Shore / Auckland Central. Tone: clear, direct, human, en-NZ.
+Painting first, decorating second. Residential homeowners in Auckland / North Shore / Auckland Central / West Auckland. Tone: clear, direct, human, en-NZ.
 Never invent testimonials, clients, reviews, awards, metrics, certifications or guarantees. Missing evidence → `evidence: "pending"` (hidden in production).
 No pricing/plans. Contact: 027 375 9093, contact@lifepaintingdec.co.nz.
 
